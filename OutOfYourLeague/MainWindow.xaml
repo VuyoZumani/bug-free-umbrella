@@ -1,0 +1,15 @@
+﻿<Window x:Class="OutOfYourLeague.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OutOfYourLeague"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button Content="Create League" Name="createLeague" HorizontalAlignment="Left" Margin="92,64,0,0" VerticalAlignment="Top" Width="103" Height="62" Click="createLeague_Click" RenderTransformOrigin="1.771,0.592"/>
+        <Button Content="Standings" Name="loadLeague" HorizontalAlignment="Left" Margin="92,161,0,0" VerticalAlignment="Top" Width="103" Height="70" Click="loadLeague_Click"/>
+        <Button Content="Fixtures" HorizontalAlignment="Left" Margin="90,285,0,0" VerticalAlignment="Top" Width="103" Height="58" Click="Button_Click"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,14 @@
+﻿<Window x:Class="OutOfYourLeague.StandingsForLeague"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OutOfYourLeague"
+        mc:Ignorable="d"
+        Title="StandingsForLeague" Height="450" Width="800">
+    <Grid>
+        <DataGrid Name="league"  HorizontalAlignment="Left" Height="399" Margin="35,10,0,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
+        </DataGrid>
+
+    </Grid>
+</Window>

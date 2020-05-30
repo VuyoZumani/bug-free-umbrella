@@ -27,7 +27,7 @@ namespace OutOfYourLeague
         }
 
         private void addTeam_Click(object sender, RoutedEventArgs e)
-        {//Add team to the league
+        {//Add team to the league listbox
             string team = teamToBeEntered.Text;
             teams.Items.Add(team);
             teamToBeEntered.Clear();
@@ -42,18 +42,26 @@ namespace OutOfYourLeague
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "CREATE TABLE " + $"{leagueName}" + " (Team varchar(255), P int NOT NULL, W int NOT NULL, D int NOT NULL, L int NOT NULL, GF int NOT NULL, FA int NOT NULL, GD int NOT NULL, Points int NOT NULL)" +
-                    "INSERT INTO " + $"{leagueName}" + " (Team, P , W , D , L , GF , FA , GD , Points) VALUES (@Team1,0,0,0,0,0,0,0,0)" +
-                    "INSERT INTO " + $"{leagueName}" + " (Team, P , W , D , L , GF , FA , GD , Points) VALUES (@Team2,0,0,0,0,0,0,0,0)" +
-                    "INSERT INTO " + $"{leagueName}" + " (Team, P , W , D , L , GF , FA , GD , Points) VALUES (@Team3,0,0,0,0,0,0,0,0)" +
-                    "INSERT INTO " + $"{leagueName}" + " (Team, P , W , D , L , GF , FA , GD , Points) VALUES (@Team4,0,0,0,0,0,0,0,0)";
+                string groupOfInsertionCommands= "";
+                //loop for creating rows with each team name and initial values
+                for(int i = 0; i < teams.Items.Count; i++)
+                {
+                    groupOfInsertionCommands += $"INSERT INTO {leagueName} (Team, P , W , D , L , GF , GA , GD , Points) " +
+                                                $"VALUES (\'{teams.Items.GetItemAt(i)}\',0,0,0,0,0,0,0,0) ";
+                }
+                cmd.CommandText =   " CREATE TABLE " + $"{leagueName}" + " (" +
+                                    " Team varchar(255)," +
+                                    " P int NOT NULL," +
+                                    " W int NOT NULL," +
+                                    " D int NOT NULL," +
+                                    " L int NOT NULL," +
+                                    " GF int NOT NULL," +
+                                    " FA int NOT NULL," +
+                                    " GD int NOT NULL," +
+                                    " Points int NOT NULL" +
+                                    ") " +
+                                    groupOfInsertionCommands;
                 cmd.Connection = sqlConnection1;
-                cmd.Parameters.AddWithValue("@Team1", teams.Items.GetItemAt(0));
-                cmd.Parameters.AddWithValue("@Team2", teams.Items.GetItemAt(1));
-                cmd.Parameters.AddWithValue("@Team3", teams.Items.GetItemAt(2));
-                cmd.Parameters.AddWithValue("@Team4", teams.Items.GetItemAt(3));
-
-
                 sqlConnection1.Open();
                 cmd.ExecuteNonQuery();
                 sqlConnection1.Close();
@@ -65,24 +73,37 @@ namespace OutOfYourLeague
             {
                 SqlCommand cmd2 = new SqlCommand();
                 cmd2.CommandType = CommandType.Text;
-                cmd2.CommandText = "SELECT * INTO fixtures FROM (SELECT CASE WHEN team1.team>team2.team THEN team2.team " +
-                    "ELSE team1.team END AS teamonLeft,NULL AS scoreleft,NULL AS scoreright, " +
-                    "CASE WHEN team1.team > team2.team THEN team1.team " +
-                    "ELSE team2.team END AS teamonRight " +
-                    "FROM " + $"{leagueName}" + " AS team1 JOIN " + $"{leagueName}" + " AS team2 " +
-                    "ON 1 = 1 " +
-                    "WHERE team1.team<> team2.team " +
-                    "GROUP BY " +
-                    "CASE WHEN team1.team > team2.team THEN team2.team " +
-                    "ELSE team1.team END, " +
-                    "CASE WHEN team1.team > team2.team THEN team1.team " +
-                    "ELSE team2.team END) AS fixtures; ";
+                cmd2.CommandText =  "SELECT * INTO fixtures " +
+                                    "FROM (" +
+                                    "SELECT " +
+                                    //"--deals with the leftside" +
+                                    "   CASE WHEN team1.team>team2.team THEN team2.team " +
+                                    "        ELSE team1.team " +
+                                    "   END AS teamonleft," +
+                                    "     NULL AS scoreleft," +
+                                    "   NULL AS scoreright, " +
+                                    //"--deals with the rightside" +
+                                    "   CASE WHEN team1.team > team2.team THEN team1.team " +
+                                    "        ELSE team2.team " +
+                                    "   END AS teamonright " +
+                                   $"FROM {leagueName} AS team1 " +
+                                   $"JOIN {leagueName} AS team2 " +
+                                    //"--cross join" +
+                                    "ON 1 = 1 " +
+                                    "WHERE team1.team<> team2.team " +
+                                    "GROUP BY " +
+                                    //"--to get rid of duplicates" +
+                                    "CASE WHEN team1.team > team2.team THEN team2.team " +
+                                    "ELSE team1.team END, " +
+                                    "CASE WHEN team1.team > team2.team THEN team1.team " +
+                                    "ELSE team2.team END) AS fixtures; ";
                 cmd2.Connection = sqlConnection2;
                 sqlConnection2.Open();
                 cmd2.ExecuteNonQuery();
                 sqlConnection2.Close();
             }
             
+
             Hide();
             MainWindow main = new MainWindow();
             main.Show();

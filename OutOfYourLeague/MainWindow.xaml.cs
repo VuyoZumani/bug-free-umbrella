@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
-using Npgsql;
 using System.Data;
 
 namespace OutOfYourLeague
@@ -31,9 +30,9 @@ namespace OutOfYourLeague
         private void createLeague_Click(object sender, RoutedEventArgs e)
         { 
             //Go to CreateLeague Window
-              Hide();
-              CreateLeague league = new CreateLeague();
-              league.Show();    
+            Hide();
+            CreateLeague league = new CreateLeague();
+            league.Show();    
         }
 
         private void loadLeague_Click(object sender, RoutedEventArgs e)
@@ -43,7 +42,10 @@ namespace OutOfYourLeague
             using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT * FROM rhodes;",sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                                                                   " FROM league" +
+                                                                   " ORDER BY Points DESC;"
+                                                                   ,sqlConnection);
                 DataTable dataTable = new DataTable();
                 sqlDataAdapter.Fill(dataTable);
                 standingsForLeague.league.ItemsSource=dataTable.DefaultView;
@@ -63,9 +65,9 @@ namespace OutOfYourLeague
                 DataTable dataTable = new DataTable();
                 sqlDataAdapter.Fill(dataTable);
                 fixtures.fixtures.ItemsSource = dataTable.DefaultView;
-                Hide();
-                fixtures.Show();
             }
+            Hide();
+            fixtures.Show();
         }
     }
 }

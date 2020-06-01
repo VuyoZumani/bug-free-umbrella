@@ -1,2 +1,2 @@
 # bug-free-umbrella
-An app for making quick fixtures for leagues and gives off interesting stats of the league as it continues
+The aim of this project is to assist the handling of the internal league and ensure that it is paperless and possibly popularize the game of football at the university. It creates soccer leagues, automatically generates fixtures and displays interesting stats of the leagues. 

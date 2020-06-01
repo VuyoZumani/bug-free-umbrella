@@ -1,4 +1,69 @@
-﻿--update number of games played in league
+﻿--SELECT * INTO fixtures
+--SQL query which is a self-join
+-- ON (t1.teamonleft<>t2.teamonleft AND t1.teamonleft<>t2.teamonright) AND (t1.teamonright<>t2.teamonleft AND t1.teamonright<>t2.teamonright)
+--FROM (
+DECLARE @numofteams int;
+SET @numofteams =( SELECT COUNT(team) FROM league);
+SELECT * FROM (
+SELECT ROW_NUMBER() OVER(ORDER BY t1.teamonleft1) AS rownum ,*
+FROM (
+		SELECT 
+		--deals with the leftside
+		CASE WHEN team1.team > team2.team THEN team2.team 
+				ELSE team1.team 
+		   END AS teamonleft1,
+			 NULL AS scoreleft1,
+		   NULL AS scoreright1, 
+		--deals with the rightside
+		   CASE WHEN team1.team > team2.team THEN team1.team 
+				ELSE team2.team 
+		   END AS teamonright1 
+		FROM league AS team1 
+		JOIN league AS team2 
+		--cross join
+		ON 1 = 1 
+		WHERE team1.team<> team2.team 
+		GROUP BY 
+		--to get rid of duplicates
+		CASE WHEN team1.team > team2.team THEN team2.team 
+		ELSE team1.team END, 
+		CASE WHEN team1.team > team2.team THEN team1.team 
+		ELSE team2.team END
+		
+
+		) AS t1
+JOIN (
+		SELECT 
+				--deals with the leftside
+				CASE WHEN team1.team > team2.team THEN team2.team 
+						ELSE team1.team 
+				   END AS teamonleft2,
+					 NULL AS scoreleft2,
+				   NULL AS scoreright2, 
+				--deals with the rightside
+				   CASE WHEN team1.team > team2.team THEN team1.team 
+						ELSE team2.team 
+				   END AS teamonright2 
+				FROM league AS team1 
+				JOIN league AS team2 
+				--cross join
+				ON 1 = 1 
+				WHERE team1.team<> team2.team 
+				GROUP BY 
+				--to get rid of duplicates
+				CASE WHEN team1.team > team2.team THEN team2.team 
+				ELSE team1.team END, 
+				CASE WHEN team1.team > team2.team THEN team1.team 
+				ELSE team2.team END
+		
+
+				) AS t2
+--get match with different teams
+ ON 1=1) jointfixture 
+WHERE (t1.teamonleft1<>t2.teamonleft2 AND t1.teamonleft1<>t2.teamonright2) AND (t1.teamonright1<>t2.teamonleft2 AND t1.teamonright1<>t2.teamonright2)
+;
+
+--update number of games played in league
 UPDATE league 
 SET P=played
 FROM (

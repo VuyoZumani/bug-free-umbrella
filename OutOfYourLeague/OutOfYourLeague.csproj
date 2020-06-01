@@ -86,12 +86,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddNewPlayerToScore.xaml.cs">
+      <DependentUpon>AddNewPlayerToScore.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fixtures.xaml.cs">
       <DependentUpon>Fixtures.xaml</DependentUpon>
     </Compile>
     <Compile Include="StandingsForLeague.xaml.cs">
       <DependentUpon>StandingsForLeague.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TopGoalScorers.xaml.cs">
+      <DependentUpon>TopGoalScorers.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AddNewPlayerToScore.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreateLeague.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -123,6 +133,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="StandingsForLeague.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TopGoalScorers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

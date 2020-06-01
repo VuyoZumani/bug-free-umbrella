@@ -24,11 +24,12 @@ namespace OutOfYourLeague
         public Fixtures()
         {
             InitializeComponent();
+            
         }
-
+        int weeknum = 1;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //Update fixture table 
+            //Update fixture tables 
             foreach (DataRowView dr in fixtures.ItemsSource)
             {
                 if (dr[1] != null && dr[2] != null)
@@ -39,6 +40,10 @@ namespace OutOfYourLeague
                         SqlCommand cmd2 = new SqlCommand();
                         cmd2.CommandType = CommandType.Text;
                         cmd2.CommandText = "UPDATE fixtures " +
+                                           "SET scoreleft=" + $"'{ dr[1]}'," +
+                                           $"   scoreright=\'{ dr[2]}\' " +
+                                           $"WHERE teamonleft='{ dr[0]}' AND teamonright='{dr[3]}'" +
+                                           $"UPDATE fixturesorted " +
                                            "SET scoreleft=" + $"'{ dr[1]}'," +
                                            $"   scoreright=\'{ dr[2]}\' " +
                                            $"WHERE teamonleft='{ dr[0]}' AND teamonright='{dr[3]}'; ";
@@ -202,6 +207,42 @@ namespace OutOfYourLeague
                 sqlConnection3.Open();
                 cmd3.ExecuteNonQuery();
                 sqlConnection3.Close();
+            }
+            //Loading the league data to see standings
+            StandingsForLeague standingsForLeague = new StandingsForLeague();
+            using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                                                                   " FROM league" +
+                                                                   " ORDER BY Points DESC;"
+                                                                   , sqlConnection);
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                standingsForLeague.league.ItemsSource = dataTable.DefaultView;
+            }
+            Hide();
+            standingsForLeague.Show();
+        }
+
+        private void weeks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selecteditm= weeks.SelectedItem.ToString();
+            int weeknum = Convert.ToInt32(selecteditm.Substring(selecteditm.Length - 1));
+            //Load fixtures to prepare for sorting
+            Fixtures fixtures = new Fixtures();
+            using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter($"SELECT teamonleft,scoreleft,scoreright,teamonright " +
+                                                                   $"FROM fixturesorted " +
+                                                                   $"WHERE week={weeknum};"
+                                                                   , sqlConnection);  
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                Hide();
+                fixtures.Show();
             }
         }
     }

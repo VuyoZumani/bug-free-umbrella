@@ -89,3 +89,7 @@ C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\OutOf
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\OutOfYourLeague.csproj.CopyComplete
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\OutOfYourLeague.exe
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\OutOfYourLeague.pdb
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\AddNewPlayerToScore.g.cs
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\TopGoalScorers.g.cs
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\AddNewPlayerToScore.baml
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\TopGoalScorers.baml

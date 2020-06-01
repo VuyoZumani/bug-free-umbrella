@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Create League" Name="createLeague" HorizontalAlignment="Left" Margin="92,64,0,0" VerticalAlignment="Top" Width="103" Height="62" Click="createLeague_Click" RenderTransformOrigin="1.771,0.592"/>
-        <Button Content="Standings" Name="loadLeague" HorizontalAlignment="Left" Margin="92,161,0,0" VerticalAlignment="Top" Width="103" Height="70" Click="loadLeague_Click"/>
-        <Button Content="Fixtures" HorizontalAlignment="Left" Margin="90,285,0,0" VerticalAlignment="Top" Width="103" Height="58" Click="Button_Click"/>
+        <Button Content="Create League" Name="createLeague" HorizontalAlignment="Left" Margin="90,25,0,0" VerticalAlignment="Top" Width="103" Height="62" Click="createLeague_Click" RenderTransformOrigin="1.771,0.592"/>
+        <Button Content="Standings" Name="loadLeague" HorizontalAlignment="Left" Margin="90,116,0,0" VerticalAlignment="Top" Width="103" Height="70" Click="loadLeague_Click"/>
+        <Button Content="Fixtures" HorizontalAlignment="Left" Margin="90,221,0,0" VerticalAlignment="Top" Width="103" Height="58" Click="Button_Click"/>
+        <Button Content="Top Goal Scorers" Name="topgoalscorers" HorizontalAlignment="Left" Margin="90,317,0,0" VerticalAlignment="Top" Width="103" Height="57" Click="stats_Click"/>
 
     </Grid>
 </Window>

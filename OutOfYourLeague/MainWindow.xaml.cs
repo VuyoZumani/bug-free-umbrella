@@ -56,18 +56,26 @@ namespace OutOfYourLeague
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //Load fixtures
+            //Load fixture for each week default is the first week for now...
             Fixtures fixtures = new Fixtures();
             using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT * FROM fixtures;", sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                                                                   "FROM fixturesorted " +
+                                                                   "WHERE week=1;"
+                                                                   , sqlConnection);
                 DataTable dataTable = new DataTable();
                 sqlDataAdapter.Fill(dataTable);
                 fixtures.fixtures.ItemsSource = dataTable.DefaultView;
             }
             Hide();
             fixtures.Show();
+        }
+
+        private void stats_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿<Window x:Class="OutOfYourLeague.AddNewPlayerToScore"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OutOfYourLeague"
+        mc:Ignorable="d"
+        Title="AddNewPlayerToScore" Height="450" Width="800">
+    <Grid>
+        <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="29,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" TextChanged="TextBox_TextChanged"/>
+        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="29,71,0,0" VerticalAlignment="Top" Width="236"/>
+        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="34,114,0,0" VerticalAlignment="Top" Width="231" Height="32"/>
+
+    </Grid>
+</Window>

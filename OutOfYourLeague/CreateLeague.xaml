@@ -9,9 +9,19 @@
     <Grid>
         <TextBox HorizontalAlignment="Left" Name="nameOfLeague" Height="41" Margin="51,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="499"/>
         <ListBox HorizontalAlignment="Left" Name="teams" Height="202" Margin="51,135,0,0" VerticalAlignment="Top" Width="499"/>
-        <Button Content="Add" Name="addTeam" HorizontalAlignment="Left" Margin="344,72,0,0" VerticalAlignment="Top" Width="195" Height="41" Click="addTeam_Click"/>
+        <Button Content="Add" Name="addTeam" HorizontalAlignment="Left" Margin="351,72,0,0" VerticalAlignment="Top" Width="195" Height="41" Click="addTeam_Click"/>
         <TextBox HorizontalAlignment="Left" Name="teamToBeEntered" Height="41" Margin="51,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162"/>
-        <Button Content="Create" Name="create" HorizontalAlignment="Left" Margin="59,350,0,0" VerticalAlignment="Top" Width="480" RenderTransformOrigin="0.04,1.75" Height="46" Click="create_Click"/>
+        <Button Content="Create" Name="create" HorizontalAlignment="Left" Margin="51,350,0,0" VerticalAlignment="Top" Width="495" RenderTransformOrigin="0.04,1.75" Height="46" Click="create_Click"/>
+        <Label Content="Note: default number of teams in the RU league are 14 teams" HorizontalAlignment="Left" Margin="53,44,0,0" VerticalAlignment="Top" Width="493" Height="24" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.069"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
 
     </Grid>
 </Window>

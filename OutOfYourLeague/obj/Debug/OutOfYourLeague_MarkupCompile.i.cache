@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\g17z1278\Source\Repos\OutOfYourLeague\obj\Debug\
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\
 OutOfYourLeague
 none
 false
 DEBUG;TRACE
-C:\Users\g17z1278\Source\Repos\OutOfYourLeague\App.xaml
-5-2011535469
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\App.xaml
+7-1591845805
 
-10-1647914907
-127-937351635
-CreateLeague.xaml;Fixtures.xaml;Login.xaml;MainWindow.xaml;StandingsForLeague.xaml;
+12-430525460
+127-2024322734
+AddNewPlayerToScore.xaml;CreateLeague.xaml;Fixtures.xaml;Login.xaml;MainWindow.xaml;StandingsForLeague.xaml;TopGoalScorers.xaml;
 
 True
 

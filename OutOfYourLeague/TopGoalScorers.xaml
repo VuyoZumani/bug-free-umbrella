@@ -7,8 +7,11 @@
         mc:Ignorable="d"
         Title="TopGoalScorers" Height="450" Width="800">
     <Grid>
-        <Button Content="Add new player" HorizontalAlignment="Left" Margin="142,10,0,0" VerticalAlignment="Top" Width="176" Height="34" Click="Button_Click"/>
-        <DataGrid HorizontalAlignment="Left" Height="229" Margin="10,49,0,0" VerticalAlignment="Top" Width="468"/>
+        <Button Content="Add new player" HorizontalAlignment="Left" Margin="211,292,0,0" VerticalAlignment="Top" Width="307" Height="34" Click="Button_Click"/>
+        <DataGrid x:Name="topgoalscorers" HorizontalAlignment="Left" Height="268" Margin="10,10,0,0" VerticalAlignment="Top" Width="710"/>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="10,357,0,0" VerticalAlignment="Top" Width="199" Height="27" Click="main_Click"/>
+        <Button x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="258,357,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="standings_Click"/>
+        <Button x:Name="fixtures" Content="Fixtures" HorizontalAlignment="Left" Margin="520,357,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="fixtures_Click"/>
 
     </Grid>
 </Window>

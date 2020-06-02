@@ -8,8 +8,10 @@
         Title="AddNewPlayerToScore" Height="450" Width="800">
     <Grid>
         <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="29,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" TextChanged="TextBox_TextChanged"/>
-        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="29,71,0,0" VerticalAlignment="Top" Width="236"/>
-        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="34,114,0,0" VerticalAlignment="Top" Width="231" Height="32"/>
+        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="29,71,0,0" VerticalAlignment="Top" Width="236" SelectionChanged="teamofplayer_SelectionChanged"/>
+        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="34,180,0,0" VerticalAlignment="Top" Width="231" Height="32" Click="addplayer_Click"/>
+        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="23" Margin="34,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="231"/>
+        <Label Content="Enter number of goals the player scored:" HorizontalAlignment="Left" Margin="34,110,0,0" VerticalAlignment="Top" Width="231"/>
 
     </Grid>
 </Window>

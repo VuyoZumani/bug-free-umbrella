@@ -8,24 +8,13 @@
         Title="Fixtures" Height="450" Width="800">
     <Grid>
 
-        <DataGrid x:Name="fixtures" HorizontalAlignment="Left" Height="257" Margin="25,35,0,0" VerticalAlignment="Top" Width="428"/>
-        <Button x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="141,326,0,0" VerticalAlignment="Top" Width="150" Height="64" Click="Button_Click" RenderTransformOrigin="-0.32,0.739"/>
-        <ComboBox Name="weeks" HorizontalAlignment="Left" Margin="518,35,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged">
-            <ComboBoxItem Content="Week 1"/>
-            <ComboBoxItem Content="Week 2"/>
-            <ComboBoxItem Content="Week 3"/>
-            <ComboBoxItem Content="Week 4"/>
-            <ComboBoxItem Content="Week 5"/>
-            <ComboBoxItem Content="Week 6"/>
-            <ComboBoxItem Content="Week 7"/>
-            <ComboBoxItem Content="Week 8"/>
-            <ComboBoxItem Content="Week 9"/>
-            <ComboBoxItem Content="Week 10"/>
-            <ComboBoxItem Content="Week 11"/>
-            <ComboBoxItem Content="Week 12"/>
-            <ComboBoxItem Content="Week 13"/>
-            <ComboBoxItem Content="Week 14"/>
+        <DataGrid x:Name="fixtures" HorizontalAlignment="Left" Height="257" Margin="25,35,0,0" VerticalAlignment="Top" Width="537"/>
+        <Button x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="217,306,0,0" VerticalAlignment="Top" Width="150" Height="34" Click="Button_Click" RenderTransformOrigin="-0.32,0.739"/>
+        <ComboBox Name="weeks" HorizontalAlignment="Left" Margin="588,35,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged">
         </ComboBox>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="25,364,0,0" VerticalAlignment="Top" Width="130" Height="25" Click="main_Click"/>
+        <Button x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="225,364,0,0" VerticalAlignment="Top" Width="130" Height="23" Click="standings_Click"/>
+        <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="431,364,0,0" VerticalAlignment="Top" Width="130" Height="23" Click="topgoalscorers_Click"/>
 
     </Grid>
 </Window>

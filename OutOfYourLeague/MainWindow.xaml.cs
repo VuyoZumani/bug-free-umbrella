@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace OutOfYourLeague
 {
@@ -22,6 +23,8 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class MainWindow : Window
     {
+        static string connectionstring = ConfigurationManager.ConnectionStrings["OutOfYourLeague.Properties.Settings.Setting"].ConnectionString;
+        public SqlConnection con = new SqlConnection(connectionstring);
         public MainWindow()
         {
             InitializeComponent();
@@ -30,52 +33,110 @@ namespace OutOfYourLeague
         private void createLeague_Click(object sender, RoutedEventArgs e)
         { 
             //Go to CreateLeague Window
-            Hide();
             CreateLeague league = new CreateLeague();
+            Hide();
             league.Show();    
         }
 
         private void loadLeague_Click(object sender, RoutedEventArgs e)
         {
             //Loading the league data to see standings
-            StandingsForLeague standingsForLeague = new StandingsForLeague();
-            using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
+            try
             {
-                sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
-                                                                   " FROM league" +
-                                                                   " ORDER BY Points DESC;"
-                                                                   ,sqlConnection);
-                DataTable dataTable = new DataTable();
-                sqlDataAdapter.Fill(dataTable);
-                standingsForLeague.league.ItemsSource=dataTable.DefaultView;
+                StandingsForLeague standingsForLeague = new StandingsForLeague();
+                using (con)
+                {
+                    con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                                                                       " FROM league" +
+                                                                       " ORDER BY Points DESC;"
+                                                                       , con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    standingsForLeague.league.ItemsSource = dataTable.DefaultView;
+                }
+                Hide();
+                standingsForLeague.Show();
             }
-            Hide();
-            standingsForLeague.Show();
+            catch(SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //Load fixture for each week default is the first week for now...
             Fixtures fixtures = new Fixtures();
-            using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
+            try
             {
-                sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
-                                                                   "FROM fixturesorted " +
-                                                                   "WHERE week=1;"
-                                                                   , sqlConnection);
-                DataTable dataTable = new DataTable();
-                sqlDataAdapter.Fill(dataTable);
-                fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                using (con)
+                {
+                    con.Open();
+                    //get first week of fixture
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                                                                       "FROM fixturesorted " +
+                                                                       "WHERE week=1;"
+                                                                       , con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+
+                    StandingsForLeague standingsForLeague = new StandingsForLeague();
+                    string lastweek = "";
+                    //get all the weeks to appear on the combobox
+                    using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
+                                                                    " FROM fixturesorted;"
+                                                                    , con))
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            if (sqlDataReader != null)
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    if (lastweek != sqlDataReader["week"].ToString())
+                                    {
+                                        fixtures.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
+                                        lastweek = sqlDataReader["week"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Hide();
+                fixtures.Show();
             }
-            Hide();
-            fixtures.Show();
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void stats_Click(object sender, RoutedEventArgs e)
         {
-
+            TopGoalScorers topGoalScorers = new TopGoalScorers();
+            //Loading the topgoalscorer data
+            try
+            {
+                using (con)
+                {
+                    con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *" +
+                                                                       "FROM topgoalscorers;"
+                                                                       , con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+                }
+                Hide();
+                topGoalScorers.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }         
         }
     }
 }

@@ -22,6 +22,7 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="617,10,0,0" VerticalAlignment="Top" Width="120" Height="41" Click="main_Click" RenderTransformOrigin="0.442,-0.531"/>
 
     </Grid>
 </Window>

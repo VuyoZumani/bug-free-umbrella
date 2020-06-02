@@ -7,8 +7,11 @@
         mc:Ignorable="d"
         Title="StandingsForLeague" Height="450" Width="800">
     <Grid>
-        <DataGrid Name="league"  HorizontalAlignment="Left" Height="399" Margin="35,10,0,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
+        <DataGrid Name="league"  HorizontalAlignment="Left" Height="339" Margin="35,10,0,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
         </DataGrid>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click"/>
+        <Button Content="Fixtures" HorizontalAlignment="Left" Margin="303,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click"/>
+        <Button Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

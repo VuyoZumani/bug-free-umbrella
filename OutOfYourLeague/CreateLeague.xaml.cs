@@ -27,7 +27,8 @@ namespace OutOfYourLeague
         }
 
         private void addTeam_Click(object sender, RoutedEventArgs e)
-        {//Add team to the league listbox
+        {
+            //Add team to the league listbox
             string team = teamToBeEntered.Text;
             teams.Items.Add(team);
             teamToBeEntered.Clear();
@@ -35,191 +36,230 @@ namespace OutOfYourLeague
 
         private void create_Click(object sender, RoutedEventArgs e)
         {
-            //creating the league table and inserting the teams into the table and setting the initial values to zero
+            MainWindow main = new MainWindow();
+            Fixtures fixtures2 = new Fixtures();
             string leagueName = nameOfLeague.Text;
-            using (SqlConnection sqlConnection1 =
-             new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
+            try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = CommandType.Text;
-                string groupOfInsertionCommands = "";
-                //loop for creating rows with each team name and initial values
-                for (int i = 0; i < teams.Items.Count; i++)
+                using (main.con)
                 {
-                    groupOfInsertionCommands += $"INSERT INTO {leagueName} (Team, P , W , D , L , GF , GA , GD , Points) " +
-                                                $"VALUES (\'{teams.Items.GetItemAt(i)}\',0,0,0,0,0,0,0,0) ";
-                }
-                cmd.CommandText = " CREATE TABLE " + $"{leagueName}" + " (" +
-                                    " Team varchar(255)," +
-                                    " P int NOT NULL," +
-                                    " W int NOT NULL," +
-                                    " D int NOT NULL," +
-                                    " L int NOT NULL," +
-                                    " GF int NOT NULL," +
-                                    " GA int NOT NULL," +
-                                    " GD int NOT NULL," +
-                                    " Points int NOT NULL" +
-                                    ") " +
-                                    groupOfInsertionCommands;
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                cmd.ExecuteNonQuery();
-                sqlConnection1.Close();
-            }
-
-            //creating fixtures
-            using (SqlConnection sqlConnection2 =
-              new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
-            {
-                SqlCommand cmd2 = new SqlCommand();
-                cmd2.CommandType = CommandType.Text;
-                cmd2.CommandText = "SELECT * INTO fixtures " +
-                                    "FROM (" +
-                                    "SELECT " +
-                                    //"--deals with the leftside" +
-                                    "   CASE WHEN team1.team>team2.team THEN team2.team " +
-                                    "        ELSE team1.team " +
-                                    "   END AS teamonleft," +
-                                    "     NULL AS scoreleft," +
-                                    "   NULL AS scoreright, " +
-                                    //"--deals with the rightside" +
-                                    "   CASE WHEN team1.team > team2.team THEN team1.team " +
-                                    "        ELSE team2.team " +
-                                    "   END AS teamonright " +
-                                   $"FROM {leagueName} AS team1 " +
-                                   $"JOIN {leagueName} AS team2 " +
-                                    //"--cross join" +
-                                    "ON 1 = 1 " +
-                                    "WHERE team1.team<> team2.team " +
-                                    "GROUP BY " +
-                                    //"--to get rid of duplicates" +
-                                    "CASE WHEN team1.team > team2.team THEN team2.team " +
-                                    "ELSE team1.team END, " +
-                                    "CASE WHEN team1.team > team2.team THEN team1.team " +
-                                    "ELSE team2.team END) AS fixtures; ";
-                cmd2.Connection = sqlConnection2;
-                sqlConnection2.Open();
-                cmd2.ExecuteNonQuery();
-                sqlConnection2.Close();
-            }
-            //Load fixtures to prepare for sorting
-            Fixtures fixtures = new Fixtures();
-            using (SqlConnection sqlConnection = new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
-            {
-                sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT * FROM fixtures;", sqlConnection);
-                SqlDataAdapter sqlDataAdapter1 = new SqlDataAdapter("SELECT COUNT(*) FROM league;", sqlConnection);
-                DataTable dataTable = new DataTable();
-                sqlDataAdapter.Fill(dataTable);
-                fixtures.fixtures.ItemsSource = dataTable.DefaultView;
-            }
-            using (SqlConnection sqlConnection3 =
-              new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
-            {
-                //get the total number of teams
-                SqlCommand cmd3 = new SqlCommand();
-                cmd3.CommandType = CommandType.Text;
-                cmd3.CommandText = "SELECT COUNT(team) FROM league;";
-                cmd3.Connection = sqlConnection3;
-                sqlConnection3.Open();
-                int numofteams = Convert.ToInt32(cmd3.ExecuteScalar());
-                sqlConnection3.Close();
-
-                //sort the fixtures such that a team plays one match per week with default being 14 teams
-                string[,] weeks = new string[20, 20];
-                int count = 0;
-                foreach (DataRowView dr in fixtures.fixtures.ItemsSource)
-                {
-                    if (count < numofteams - 1)
+                    main.con.Open();
+                    SqlCommand cmdinsertintoleague = new SqlCommand();
+                    cmdinsertintoleague.CommandType = CommandType.Text;
+                    string groupOfInsertionCommands = "";
+                    //loop for creating rows with each team name and initial values
+                    for (int i = 0; i < teams.Items.Count; i++)
                     {
-                        weeks[count, 0] = $"{dr[0]}|" + $"{dr[3]}";
+                        groupOfInsertionCommands += $"INSERT INTO {leagueName} (Team, P , W , D , L , GF , GA , GD , Points) " +
+                                                    $"VALUES (\'{teams.Items.GetItemAt(i)}\',0,0,0,0,0,0,0,0) ";
                     }
-                    else
+                    //creating the league table and inserting the teams into the table and setting the initial values to zero
+                    cmdinsertintoleague.CommandText = " CREATE TABLE " + $"{leagueName}" + " (" +
+                                        " Team varchar(255)," +
+                                        " P int NOT NULL," +
+                                        " W int NOT NULL," +
+                                        " D int NOT NULL," +
+                                        " L int NOT NULL," +
+                                        " GF int NOT NULL," +
+                                        " GA int NOT NULL," +
+                                        " GD int NOT NULL," +
+                                        " Points int NOT NULL" +
+                                        ") " +
+                                        groupOfInsertionCommands;
+                    cmdinsertintoleague.Connection = main.con;
+                    cmdinsertintoleague.ExecuteNonQuery();
+
+                    //creating fixtures
+                    SqlCommand cmdcreatefixture = new SqlCommand();
+                    cmdcreatefixture.CommandType = CommandType.Text;
+                    cmdcreatefixture.CommandText = "SELECT * INTO fixtures " +
+                                        "FROM (" +
+                                        "SELECT " +
+                                        //"--deals with the leftside" +
+                                        "   CASE WHEN team1.team>team2.team THEN team2.team " +
+                                        "        ELSE team1.team " +
+                                        "   END AS teamonleft," +
+                                        "     NULL AS scoreleft," +
+                                        "   NULL AS scoreright, " +
+                                        //"--deals with the rightside" +
+                                        "   CASE WHEN team1.team > team2.team THEN team1.team " +
+                                        "        ELSE team2.team " +
+                                        "   END AS teamonright " +
+                                       $"FROM {leagueName} AS team1 " +
+                                       $"JOIN {leagueName} AS team2 " +
+                                        //"--cross join" +
+                                        "ON 1 = 1 " +
+                                        "WHERE team1.team<> team2.team " +
+                                        "GROUP BY " +
+                                        //"--to get rid of duplicates" +
+                                        "CASE WHEN team1.team > team2.team THEN team2.team " +
+                                        "ELSE team1.team END, " +
+                                        "CASE WHEN team1.team > team2.team THEN team1.team " +
+                                        "ELSE team2.team END) AS fixtures; ";
+                    cmdcreatefixture.Connection = main.con;
+                    cmdcreatefixture.ExecuteNonQuery();
+
+                    //Load fixtures to prepare for sorting
+                    Fixtures fixtures = new Fixtures();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT * FROM fixtures;", main.con);
+                    SqlDataAdapter sqlDataAdapter1 = new SqlDataAdapter("SELECT COUNT(*) FROM league;", main.con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+
+                    //get the total number of teams
+                    SqlCommand cmdnumteams = new SqlCommand();
+                    cmdnumteams.CommandType = CommandType.Text;
+                    cmdnumteams.CommandText = "SELECT COUNT(team) FROM league;";
+                    cmdnumteams.Connection = main.con;
+                    int numofteams = Convert.ToInt32(cmdnumteams.ExecuteScalar());
+
+                    //sort the fixtures such that a team plays one match per week with default being 14 teams
+                    string[,] weeks = new string[20, 20];
+                    int count = 0;
+                    foreach (DataRowView dr in fixtures.fixtures.ItemsSource)
                     {
-                        //check if week has does not have both teams
-                        bool inweek = false;
-                        int index = 0;
-                        for (int i = 0; i < numofteams*2 ; i++)
+                        if (count < numofteams - 1)
                         {
-                            for (int j = 0; j < numofteams*2; j++)
-                            {//if there is no matches that week then insert the match
-                                if (weeks[i, j] == null)
-                                {
-                                    index = j;
-                                    weeks[i, j]= $"{dr[0]}|" + $"{dr[3]}";
-                                    break;
-                                }
-                                else
-                                {//if one of the teams already has a match that week 
-                                    if (weeks[i, j].Contains($"{dr[0]}") || weeks[i, j].Contains($"{dr[3]}"))
+                            weeks[count, 0] = $"{dr[0]}|" + $"{dr[3]}";
+                        }
+                        else
+                        {
+                            //check if week has does not have both teams
+                            bool inweek = false;
+                            int index = 0;
+                            for (int i = 0; i < numofteams * 2; i++)
+                            {
+                                for (int j = 0; j < numofteams * 2; j++)
+                                {//if there is no matches that week then insert the match
+                                    if (weeks[i, j] == null)
                                     {
-                                        inweek = true;
+                                        index = j;
+                                        weeks[i, j] = $"{dr[0]}|" + $"{dr[3]}";
                                         break;
                                     }
+                                    else
+                                    {//if one of the teams already has a match that week 
+                                        if (weeks[i, j].Contains($"{dr[0]}") || weeks[i, j].Contains($"{dr[3]}"))
+                                        {
+                                            inweek = true;
+                                            break;
+                                        }
+                                    }
                                 }
+                                //not in the week, then can be inserted
+                                if (inweek == false)
+                                {
+                                    weeks[i, index] = $"{dr[0]}|" + $"{dr[3]}";
+                                    break;
+                                }
+                                inweek = false;
                             }
-                            //not in the week, then can be inserted
-                            if (inweek == false)
-                            {
-                                weeks[i, index] = $"{dr[0]}|" + $"{dr[3]}";
-                                break;                              
-                            }
-                            inweek = false;            
                         }
+                        count++;
                     }
-                    count++;
-                }
                     //shuffle the weeks
                     string temp = "";
-                for(int m = 0; m < 20; m++)
+                    for (int m = 0; m < 20; m++)
                     {
-                        for(int n = 0; n < 20; n++)
+                        for (int n = 0; n < 20; n++)
                         {
                             //this is to ensure that a team plays at least every other day in the fixture
-                            if(m%2!=0 && m > 2 && weeks[m,n]!=null)
+                            if (m % 2 != 0 && m > 2 && weeks[m, n] != null)
                             {
                                 temp = weeks[m, n];
                                 weeks[m, n] = weeks[m - 1, n];
                                 weeks[m - 1, n] = temp;
-                            } 
+                            }
                         }
                     }
-                //get sorted data back to fixture
-                string groupOfInsertionCommands = "";
-                //loop for inserting the now sorted fixtures in fixturesorted table
-                for (int j = 0; j < 20; j++)
-                {
-                    for (int i = 0; i < 20; i++)
+                    //get sorted data back to fixture
+                    string inserttofixturesorted = "";
+                    //loop for inserting the now sorted fixtures in fixturesorted table
+                    for (int j = 0; j < 20; j++)
                     {
-                        if (weeks[j,i] != null)
+                        for (int i = 0; i < 20; i++)
                         {
-                            string teamonleft = weeks[j, i].Split('|')[0];
-                            string teamonright = weeks[j, i].Split('|')[1];
-                            groupOfInsertionCommands += $"INSERT INTO fixturesorted (week,teamonleft,teamonright) " +
-                                                    $"VALUES (\'{j+1}\',\'{teamonleft}\',\'{teamonright}\') ";                          
+                            if (weeks[j, i] != null)
+                            {
+                                string teamonleft = weeks[j, i].Split('|')[0];
+                                string teamonright = weeks[j, i].Split('|')[1];
+                                inserttofixturesorted += $"INSERT INTO fixturesorted (week,teamonleft,teamonright) " +
+                                                        $"VALUES (\'{j + 1}\',\'{teamonleft}\',\'{teamonright}\') ";
+                            }
                         }
                     }
-                }
-                //get sorted fixtures back to fixture table
-                using (SqlConnection sqlConnection1 =
-                 new SqlConnection("Server=localhost;Database=master;Trusted_Connection=True;"))
-                {
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = " CREATE TABLE fixturesorted (" +
+                    //get sorted fixtures back to fixture table                    
+                    SqlCommand cmdfixturesort = new SqlCommand();
+                    cmdfixturesort.CommandType = CommandType.Text;
+                    cmdfixturesort.CommandText = " CREATE TABLE fixturesorted (" +
                                         " week int NOT NULL," +
                                         " teamonleft varchar(255)," +
                                         " scoreleft int ," +
                                         " scoreright int ," +
                                         " teamonright varchar(255)" +
                                         ") " +
-                                        groupOfInsertionCommands;
-                    cmd.Connection = sqlConnection1;
-                    sqlConnection1.Open();
-                    cmd.ExecuteNonQuery();
-                    sqlConnection1.Close();
-                }     
+                                         inserttofixturesorted;
+                    cmdfixturesort.Connection = main.con;
+                    cmdfixturesort.ExecuteNonQuery();
+
+                    //create top goal scorer table
+                    SqlCommand cmdtopgoalscorer = new SqlCommand();
+                    cmdtopgoalscorer.CommandType = CommandType.Text;
+                    cmdtopgoalscorer.CommandText = " CREATE TABLE topgoalscorers (" +
+                                        " Player varchar(255)," +
+                                        " Team varchar(255) ," +
+                                        " Goals int " +
+                                        ") ";
+                    cmdtopgoalscorer.Connection = main.con;
+                    cmdtopgoalscorer.ExecuteNonQuery();
+
+                    //Load fixture for each week default is the first week for now...
+                    
+                    SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                                                                           "FROM fixturesorted " +
+                                                                           "WHERE week=1;"
+                                                                           , main.con);
+                    DataTable dataTable2 = new DataTable();
+                    sqlDataAdapter2.Fill(dataTable2);
+                    fixtures2.fixtures.ItemsSource = dataTable2.DefaultView;
+                    string lastweek = "";
+                    using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
+                                                                  " FROM fixturesorted;"
+                                                                    , main.con))
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            if (sqlDataReader != null)
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    if (lastweek != sqlDataReader["week"].ToString())
+                                    {
+                                        fixtures2.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
+                                        lastweek = sqlDataReader["week"].ToString();
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    Hide();
+                    fixtures2.Show();
+                }
             }
+            catch(SqlException ex) 
+            {
+                MessageBox.Show(ex.ToString());
+            }          
+        }
+
+        private void main_Click(object sender, RoutedEventArgs e)
+        {
+            //Go back to main window
+            MainWindow main = new MainWindow();
+            Hide();
+            main.Show();
         }
     }
 }

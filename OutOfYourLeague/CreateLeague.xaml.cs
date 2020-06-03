@@ -38,23 +38,17 @@ namespace OutOfYourLeague
         {
             MainWindow main = new MainWindow();
             Fixtures fixtures2 = new Fixtures();
-            string leagueName = nameOfLeague.Text;
             try
             {
                 using (main.con)
                 {
                     main.con.Open();
-                    SqlCommand cmdinsertintoleague = new SqlCommand();
-                    cmdinsertintoleague.CommandType = CommandType.Text;
-                    string groupOfInsertionCommands = "";
-                    //loop for creating rows with each team name and initial values
-                    for (int i = 0; i < teams.Items.Count; i++)
-                    {
-                        groupOfInsertionCommands += $"INSERT INTO {leagueName} (Team, P , W , D , L , GF , GA , GD , Points) " +
-                                                    $"VALUES (\'{teams.Items.GetItemAt(i)}\',0,0,0,0,0,0,0,0) ";
-                    }
+                    SqlCommand cmdcreateleague = new SqlCommand();
+                    cmdcreateleague.CommandType = CommandType.Text;
+                    
+                    
                     //creating the league table and inserting the teams into the table and setting the initial values to zero
-                    cmdinsertintoleague.CommandText = " CREATE TABLE " + $"{leagueName}" + " (" +
+                    cmdcreateleague.CommandText = " CREATE TABLE league (" +
                                         " Team varchar(255)," +
                                         " P int NOT NULL," +
                                         " W int NOT NULL," +
@@ -64,10 +58,23 @@ namespace OutOfYourLeague
                                         " GA int NOT NULL," +
                                         " GD int NOT NULL," +
                                         " Points int NOT NULL" +
-                                        ") " +
-                                        groupOfInsertionCommands;
-                    cmdinsertintoleague.Connection = main.con;
-                    cmdinsertintoleague.ExecuteNonQuery();
+                                        ") ";
+                    cmdcreateleague.Connection = main.con;
+                    cmdcreateleague.ExecuteNonQuery();
+                    //loop for creating rows with each team name and initial values
+                    for (int i = 0; i < teams.Items.Count; i++)
+                    {
+                        SqlCommand cmdinsertleague = new SqlCommand();
+                        cmdinsertleague.CommandType = CommandType.Text;
+                        //creating the league table and inserting the teams into the table and setting the initial values to zero
+                        cmdinsertleague.CommandText= "INSERT INTO league (Team, P , W , D , L , GF , GA , GD , Points) " +
+                                                     $"VALUES (@teaminleague{i},0,0,0,0,0,0,0,0) ";
+                        cmdinsertleague.Parameters.AddWithValue($"@teaminleague{i}", teams.Items.GetItemAt(i));
+                        cmdinsertleague.Connection = main.con;
+                        cmdinsertleague.ExecuteNonQuery();
+                    }
+                    
+                    
 
                     //creating fixtures
                     SqlCommand cmdcreatefixture = new SqlCommand();
@@ -85,8 +92,8 @@ namespace OutOfYourLeague
                                         "   CASE WHEN team1.team > team2.team THEN team1.team " +
                                         "        ELSE team2.team " +
                                         "   END AS teamonright " +
-                                       $"FROM {leagueName} AS team1 " +
-                                       $"JOIN {leagueName} AS team2 " +
+                                       $"FROM league AS team1 " +
+                                       $"JOIN league AS team2 " +
                                         //"--cross join" +
                                         "ON 1 = 1 " +
                                         "WHERE team1.team<> team2.team " +
@@ -105,8 +112,7 @@ namespace OutOfYourLeague
                     SqlDataAdapter sqlDataAdapter1 = new SqlDataAdapter("SELECT COUNT(*) FROM league;", main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
-                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
-
+                    
                     //get the total number of teams
                     SqlCommand cmdnumteams = new SqlCommand();
                     cmdnumteams.CommandType = CommandType.Text;
@@ -117,7 +123,7 @@ namespace OutOfYourLeague
                     //sort the fixtures such that a team plays one match per week with default being 14 teams
                     string[,] weeks = new string[20, 20];
                     int count = 0;
-                    foreach (DataRowView dr in fixtures.fixtures.ItemsSource)
+                    foreach (DataRowView dr in dataTable.DefaultView)
                     {
                         if (count < numofteams - 1)
                         {
@@ -174,21 +180,7 @@ namespace OutOfYourLeague
                         }
                     }
                     //get sorted data back to fixture
-                    string inserttofixturesorted = "";
-                    //loop for inserting the now sorted fixtures in fixturesorted table
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int i = 0; i < 20; i++)
-                        {
-                            if (weeks[j, i] != null)
-                            {
-                                string teamonleft = weeks[j, i].Split('|')[0];
-                                string teamonright = weeks[j, i].Split('|')[1];
-                                inserttofixturesorted += $"INSERT INTO fixturesorted (week,teamonleft,teamonright) " +
-                                                        $"VALUES (\'{j + 1}\',\'{teamonleft}\',\'{teamonright}\') ";
-                            }
-                        }
-                    }
+                    
                     //get sorted fixtures back to fixture table                    
                     SqlCommand cmdfixturesort = new SqlCommand();
                     cmdfixturesort.CommandType = CommandType.Text;
@@ -198,10 +190,30 @@ namespace OutOfYourLeague
                                         " scoreleft int ," +
                                         " scoreright int ," +
                                         " teamonright varchar(255)" +
-                                        ") " +
-                                         inserttofixturesorted;
+                                        ") ";
                     cmdfixturesort.Connection = main.con;
                     cmdfixturesort.ExecuteNonQuery();
+                    //loop for inserting the now sorted fixtures in fixturesorted table
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int i = 0; i < 20; i++)
+                        {
+                            if (weeks[j, i] != null)
+                            {
+                                string teamonleft = weeks[j, i].Split('|')[0];
+                                string teamonright = weeks[j, i].Split('|')[1]; 
+                                SqlCommand cmdinsertfixturesort = new SqlCommand();
+                                cmdinsertfixturesort.CommandType = CommandType.Text;
+                                cmdinsertfixturesort.CommandText = $"INSERT INTO fixturesorted (week,teamonleft,teamonright) " +
+                                                        $"VALUES (@week,@teamonleft,@teamonright) ";
+                                cmdinsertfixturesort.Parameters.AddWithValue("@teamonleft", teamonleft);
+                                cmdinsertfixturesort.Parameters.AddWithValue("@teamonright", teamonright);
+                                cmdinsertfixturesort.Parameters.AddWithValue("@week", j + 1);
+                                cmdinsertfixturesort.Connection = main.con;
+                                cmdinsertfixturesort.ExecuteNonQuery();
+                            }
+                        }
+                    }
 
                     //create top goal scorer table
                     SqlCommand cmdtopgoalscorer = new SqlCommand();
@@ -215,7 +227,7 @@ namespace OutOfYourLeague
                     cmdtopgoalscorer.ExecuteNonQuery();
 
                     //Load fixture for each week default is the first week for now...
-                    
+
                     SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
                                                                            "FROM fixturesorted " +
                                                                            "WHERE week=1;"

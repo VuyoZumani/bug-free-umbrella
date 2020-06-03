@@ -94,8 +94,7 @@ namespace OutOfYourLeague
         {
             MainWindow main = new MainWindow();
             TopGoalScorers topGoalScorers = new TopGoalScorers();
-            //Load fixture for each week default is the first week for now...
-            Fixtures fixtures = new Fixtures();
+            //Load top goal scorers...
             try
             {
                 using (main.con)
@@ -106,7 +105,8 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
-                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+
                 }
                 Hide();
                 topGoalScorers.Show();
@@ -114,7 +114,7 @@ namespace OutOfYourLeague
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.ToString());
-            }            
+            }
         }
     }
 }

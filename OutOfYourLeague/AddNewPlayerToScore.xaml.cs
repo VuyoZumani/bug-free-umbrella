@@ -49,9 +49,12 @@ namespace OutOfYourLeague
                     main.con.Open();                   
                     SqlCommand cmd = new SqlCommand();
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (\'{player.Text}\',\'{teamofplayer.SelectedItem.ToString()}\',{goals.Text})";
+                    cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (@player,@teamofplayer,@goals)";
+                    cmd.Parameters.AddWithValue("@player",player.Text);
+                    cmd.Parameters.AddWithValue("@teamofplayer", teamofplayer.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@goals", goals.Text);
                     cmd.Connection = main.con;
-                    
+                    cmd.ExecuteNonQuery();
                     //Loading the topgoalscorer data
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
                                                                        " FROM topgoalscorers" +
@@ -69,6 +72,41 @@ namespace OutOfYourLeague
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void main_Click(object sender, RoutedEventArgs e)
+        {
+            //Go back to main window
+            MainWindow main = new MainWindow();
+            Hide();
+            main.Show();
+        }
+
+        private void topgoalscorers_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            TopGoalScorers topGoalScorers = new TopGoalScorers();
+            //Load top goal scorers...
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *" +
+                                                                       "FROM topgoalscorers;"
+                                                                       , main.con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+
+                }
+                Hide();
+                topGoalScorers.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     } 
 }

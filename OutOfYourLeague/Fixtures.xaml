@@ -8,7 +8,7 @@
         Title="Fixtures" Height="450" Width="800">
     <Grid>
 
-        <DataGrid x:Name="fixtures" HorizontalAlignment="Left" Height="257" Margin="25,35,0,0" VerticalAlignment="Top" Width="537"/>
+        <DataGrid x:Name="fixtures" HorizontalAlignment="Left" Height="282" Margin="25,10,0,0" VerticalAlignment="Top" Width="537"/>
         <Button x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="217,306,0,0" VerticalAlignment="Top" Width="150" Height="34" Click="Button_Click" RenderTransformOrigin="-0.32,0.739"/>
         <ComboBox Name="weeks" HorizontalAlignment="Left" Margin="588,35,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged">
         </ComboBox>

@@ -38,22 +38,29 @@ namespace OutOfYourLeague
                     main.con.Open();
                     //Update fixture tables 
                     foreach (DataRowView dr in fixtures.ItemsSource)
+                       
                     {
-                        if (dr[1] != null && dr[2] != null)
+                        if ($"{dr[1]}" != "" && $"{dr[2]}" != "")
                         {
 
                             SqlCommand cmdupdatefixture = new SqlCommand();
                             cmdupdatefixture.CommandType = CommandType.Text;
-                            cmdupdatefixture.CommandText = "UPDATE fixtures " +
-                                               "SET scoreleft=" + $"'{ dr[1]}'," +
-                                               $"   scoreright=\'{ dr[2]}\' " +
-                                               $"WHERE teamonleft='{ dr[0]}' AND teamonright='{dr[3]}'" +
-                                               $"UPDATE fixturesorted " +
-                                               "SET scoreleft=" + $"'{ dr[1]}'," +
-                                               $"   scoreright=\'{ dr[2]}\' " +
-                                               $"WHERE teamonleft='{ dr[0]}' AND teamonright='{dr[3]}'; ";
+                            cmdupdatefixture.CommandText = "UPDATE fixtures" +
+                                                          " SET scoreleft=@scoreleft," +
+                                                          "     scoreright=@scoreright" +
+                                                          " WHERE teamonleft=@teamonleft AND teamonright=@teamonright" +
+                                                          " UPDATE fixturesorted" +
+                                                          " SET scoreleft=@scoreleft," +
+                                                          " scoreright=@scoreright " +
+                                                          " WHERE teamonleft=@teamonleft AND teamonright=@teamonright; ";
+                            cmdupdatefixture.Parameters.AddWithValue("@scoreleft", dr[1]);
+                            cmdupdatefixture.Parameters.AddWithValue("@scoreright", dr[2]);
+                            cmdupdatefixture.Parameters.AddWithValue("@teamonleft", dr[0]);
+                            cmdupdatefixture.Parameters.AddWithValue("@teamonright", dr[3]);
                             cmdupdatefixture.Connection = main.con;
                             cmdupdatefixture.ExecuteNonQuery();
+
+                            
                         }
                     }
                     //update the league table through the updated fixture table
@@ -71,9 +78,9 @@ namespace OutOfYourLeague
                         //" --number of wins a team has" +
                         "       SELECT team, Count(*) AS played" +
                         "       FROM fixtures, league" +
-                        "       WHERE Team = teamonleft OR Team = teamonright" +
+                        "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND  (Team = teamonleft OR Team = teamonright)" +
                         "       GROUP BY team ) AS playedtable" +
-                        "       WHERE playedtable.team = league.team;" +
+                        "       WHERE  playedtable.team = league.team;" +
 
                         //" --update number of wins in league" +
                         " UPDATE league" +
@@ -82,7 +89,7 @@ namespace OutOfYourLeague
                         //" --number of wins a team has" +
                         "       SELECT team, Count(*) AS wins" +
                         "       FROM fixtures, league" +
-                        "       WHERE (scoreleft > scoreright AND Team = teamonleft) OR (scoreleft < scoreright AND Team = teamonright)" +
+                        "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft > scoreright AND Team = teamonleft) OR (scoreleft < scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
 
@@ -93,7 +100,7 @@ namespace OutOfYourLeague
                         //" --number of losses a team has in fixtures" +
                         "       SELECT team, Count(*) AS losses" +
                         "       FROM fixtures, league" +
-                        "       WHERE (scoreleft < scoreright AND Team = teamonleft) OR(scoreleft > scoreright AND Team = teamonright)" +
+                        "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft < scoreright AND Team = teamonleft) OR(scoreleft > scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
 
@@ -104,7 +111,7 @@ namespace OutOfYourLeague
                         //" --number of draws a team has in fixtures" +
                         "       SELECT team, Count(*) AS draws" +
                         "       FROM fixtures, league" +
-                        "       WHERE (scoreleft = scoreright AND team = teamonleft) OR (scoreleft = scoreright AND Team = teamonright)" +
+                        "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft = scoreright AND team = teamonleft) OR (scoreleft = scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
 
@@ -133,17 +140,17 @@ namespace OutOfYourLeague
                         //" --gets the total goals scored when playing on the left side of fixture" +
                         "       SELECT team AS team1, SUM(scoreleft) AS totalonleft" +
                         "       FROM fixtures, league" +
-                        "       WHERE team = teamonleft" +
+                        "       WHERE (scoreleft IS NOT NULL)  AND team = teamonleft" +
                         "       GROUP BY team" +
                         "       ) AS tableforgoalsonleft" +
                         " FULL JOIN(" +
                         //" --gets the total goals scored when on the right side of fixture" +
                         "       SELECT team AS team2, SUM(scoreright) AS totalonright" +
                         "       FROM fixtures, league" +
-                        "       WHERE team = teamonright" +
+                        "       WHERE (scoreright IS NOT NULL)  AND team = teamonright" +
                         "       GROUP BY team) AS tableforgoalsonright" +
                         "       ON tableforgoalsonleft.team1 = tableforgoalsonright.team2) AS allinonetable) AS jointgftable" +
-                        " WHERE league.team = jointgftable.team;" +
+                        " WHERE  league.team = jointgftable.team;" +
 
                         //" --update goals against teams" +
                         " UPDATE league" +
@@ -170,14 +177,14 @@ namespace OutOfYourLeague
                         //" --gets the total goals scored against when playing on the left side of fixture" +
                         "           SELECT team AS team1, SUM(scoreright) AS totalonleft" +
                         "           FROM fixtures, league" +
-                        "           WHERE team = teamonleft" +
+                        "           WHERE (scoreright IS NOT NULL)  AND team = teamonleft" +
                         "           GROUP BY team" +
                         "           ) AS tableforgoalsagainstonleft" +
                         " FULL JOIN(" +
                         //" --gets the total goals scored against when on the right side of fixture" +
                         "       SELECT team AS team2, SUM(scoreleft) AS totalonright" +
                         "       FROM fixtures, league" +
-                        "       WHERE team = teamonright" +
+                        "       WHERE (scoreleft IS NOT NULL)  AND team = teamonright" +
                         "       GROUP BY team) AS tableforgoalsagainstonright" +
                         "       ON tableforgoalsagainstonleft.team1 = tableforgoalsagainstonright.team2) AS allinonetable) AS jointgatable" +
                         " WHERE league.team = jointgatable.team;" +
@@ -202,8 +209,9 @@ namespace OutOfYourLeague
                         "       FROM league" +
                         "       GROUP BY team) AS pointstable" +
                         " WHERE league.team = pointstable.team; ";
-                    cmdupdateleague.Connection = main.con;
-                    cmdupdateleague.ExecuteNonQuery();
+                        cmdupdateleague.Connection = main.con;
+                        cmdupdateleague.ExecuteNonQuery();
+
 
                     //Loading the league data to see standings
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
@@ -225,7 +233,46 @@ namespace OutOfYourLeague
 
         private void weeks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            MainWindow main = new MainWindow();
+            string selecteditm= weeks.SelectedItem.ToString();
+            int weeknum = Convert.ToInt32(selecteditm.Substring(selecteditm.Length - 1));
+            //Load fixtures to prepare for sorting
+            Fixtures fixtures = new Fixtures();
+            using (main.con)
+            {
+                main.con.Open();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter($"SELECT teamonleft,scoreleft,scoreright,teamonright " +
+                                                                   $"FROM fixturesorted " +
+                                                                   $"WHERE week={weeknum};"
+                                                                   , main.con);  
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                string lastweek = "";
+                //get all the weeks to appear on the combobox
+                using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
+                                                                " FROM fixturesorted;"
+                                                                , main.con))
+                {
+                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (sqlDataReader != null)
+                        {
+                            while (sqlDataReader.Read())
+                            {
+                                if (lastweek != sqlDataReader["week"].ToString())
+                                {
+                                    fixtures.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
+                                    lastweek = sqlDataReader["week"].ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+                Hide();
+                fixtures.Show();
+            }
+
         }
 
         private void main_Click(object sender, RoutedEventArgs e)
@@ -233,7 +280,6 @@ namespace OutOfYourLeague
             //Go back to main window
             MainWindow main = new MainWindow();
             Hide();
-
             main.Show();
         }
 
@@ -241,8 +287,7 @@ namespace OutOfYourLeague
         {
             MainWindow main = new MainWindow();
             TopGoalScorers topGoalScorers = new TopGoalScorers();
-            //Load fixture for each week default is the first week for now...
-            Fixtures fixtures = new Fixtures();
+            //Load top goal scorers...
             try
             {
                 using (main.con)
@@ -253,16 +298,16 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
-                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+
                 }
                 Hide();
                 topGoalScorers.Show();
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-            
         }
 
         private void standings_Click(object sender, RoutedEventArgs e)
@@ -286,10 +331,10 @@ namespace OutOfYourLeague
                 Hide();
                 standingsForLeague.Show();
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 MessageBox.Show(ex.ToString());
-            }           
+            }
         }
     }
 }

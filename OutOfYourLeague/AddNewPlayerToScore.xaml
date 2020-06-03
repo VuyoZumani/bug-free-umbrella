@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="AddNewPlayerToScore" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="29,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" TextChanged="TextBox_TextChanged"/>
-        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="29,71,0,0" VerticalAlignment="Top" Width="236" SelectionChanged="teamofplayer_SelectionChanged"/>
-        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="34,180,0,0" VerticalAlignment="Top" Width="231" Height="32" Click="addplayer_Click"/>
-        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="23" Margin="34,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="231"/>
-        <Label Content="Enter number of goals the player scored:" HorizontalAlignment="Left" Margin="34,110,0,0" VerticalAlignment="Top" Width="231"/>
+        <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="157,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="492" TextChanged="TextBox_TextChanged"/>
+        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="153,71,0,0" VerticalAlignment="Top" Width="496" SelectionChanged="teamofplayer_SelectionChanged"/>
+        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="160,248,0,0" VerticalAlignment="Top" Width="489" Height="66" Click="addplayer_Click"/>
+        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="40" Margin="168,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="481"/>
+        <Label Content="Enter number of goals the player scored:" HorizontalAlignment="Left" Margin="160,108,0,0" VerticalAlignment="Top" Width="489"/>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="160,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="main_Click"/>
+        <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="529,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="topgoalscorers_Click"/>
 
     </Grid>
 </Window>

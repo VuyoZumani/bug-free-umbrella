@@ -98,6 +98,8 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[1].ReadOnly = true;
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
 
                 }

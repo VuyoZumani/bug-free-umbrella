@@ -270,13 +270,19 @@ namespace OutOfYourLeague
                             }
                         }
                     }
+                    fixtures.user = user;
+                    if (fixtures.user == "player")
+                    {
+                        fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[1].ReadOnly = true;
+                        dataTable.Columns[2].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[3].ReadOnly = true;
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
                 }
                 Close();
-                fixtures.user = user;
-                if (fixtures.user == "player")
-                {
-                    fixtures.updateLeague.Visibility = Visibility.Collapsed;
-                }
                 fixtures.Show();
             }
 
@@ -310,15 +316,18 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+                    topGoalScorers.user = user;
+                    if (topGoalScorers.user == "player")
+                    {
+                        topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[2].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[1].ReadOnly = true;
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
-
                 }
                 Close();
-                topGoalScorers.user = user;
-                if (topGoalScorers.user == "player")
-                {
-                    topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
-                }
                 topGoalScorers.Show();
             }
             catch (SqlException ex)
@@ -343,6 +352,12 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+
+                    //make columns read only
+                    foreach (DataColumn col in dataTable.Columns)
+                    {
+                        col.ReadOnly = true;
+                    }
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                 }
                 Close();

@@ -235,6 +235,8 @@ namespace OutOfYourLeague
                                                                         , main.con);
                     DataTable dataTable2 = new DataTable();
                     sqlDataAdapter2.Fill(dataTable2);
+                    dataTable2.Columns[0].ReadOnly = true;
+                    dataTable2.Columns[3].ReadOnly = true;
                     fixtures2.fixtures.ItemsSource = dataTable2.DefaultView;
                     string lastweek = "";
                     using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +

@@ -21,6 +21,7 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class Fixtures : Window
     {
+        public string user = "";
         public Fixtures()
         {
             InitializeComponent();
@@ -46,13 +47,13 @@ namespace OutOfYourLeague
                             SqlCommand cmdupdatefixture = new SqlCommand();
                             cmdupdatefixture.CommandType = CommandType.Text;
                             cmdupdatefixture.CommandText = "UPDATE fixtures" +
-                                                          " SET scoreleft=@scoreleft," +
-                                                          "     scoreright=@scoreright" +
-                                                          " WHERE teamonleft=@teamonleft AND teamonright=@teamonright" +
+                                                          " SET scoreleft = @scoreleft," +
+                                                          "     scoreright = @scoreright" +
+                                                          " WHERE teamonleft = @teamonleft AND teamonright = @teamonright" +
                                                           " UPDATE fixturesorted" +
-                                                          " SET scoreleft=@scoreleft," +
-                                                          " scoreright=@scoreright " +
-                                                          " WHERE teamonleft=@teamonleft AND teamonright=@teamonright; ";
+                                                          " SET scoreleft = @scoreleft," +
+                                                          " scoreright = @scoreright " +
+                                                          " WHERE teamonleft = @teamonleft AND teamonright = @teamonright; ";
                             cmdupdatefixture.Parameters.AddWithValue("@scoreleft", dr[1]);
                             cmdupdatefixture.Parameters.AddWithValue("@scoreright", dr[2]);
                             cmdupdatefixture.Parameters.AddWithValue("@teamonleft", dr[0]);
@@ -69,7 +70,7 @@ namespace OutOfYourLeague
                     cmdupdateleague.CommandText =
                         //"--prepare for new update league" +
                         " UPDATE league" +
-                        " SET P = 0,W=0,D=0,L=0,GF=0,GA=0,Points=0" +
+                        " SET P = 0, W = 0, D = 0,L = 0, GF = 0, GA = 0, Points = 0" +
 
                         //"--update number of games played in league" +
                         " UPDATE league" +
@@ -222,6 +223,7 @@ namespace OutOfYourLeague
                     sqlDataAdapter.Fill(dataTable);
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                     Hide();
+                    standingsForLeague.user = user;
                     standingsForLeague.Show();
                 }
             }
@@ -241,9 +243,9 @@ namespace OutOfYourLeague
             using (main.con)
             {
                 main.con.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter($"SELECT teamonleft,scoreleft,scoreright,teamonright " +
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter($"SELECT teamonleft, scoreleft, scoreright, teamonright " +
                                                                    $"FROM fixturesorted " +
-                                                                   $"WHERE week={weeknum};"
+                                                                   $"WHERE week = {weeknum};"
                                                                    , main.con);  
                 DataTable dataTable = new DataTable();
                 sqlDataAdapter.Fill(dataTable);
@@ -269,7 +271,12 @@ namespace OutOfYourLeague
                         }
                     }
                 }
-                Hide();
+                Close();
+                fixtures.user = user;
+                if (fixtures.user == "player")
+                {
+                    fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                }
                 fixtures.Show();
             }
 
@@ -279,7 +286,12 @@ namespace OutOfYourLeague
         {
             //Go back to main window
             MainWindow main = new MainWindow();
-            Hide();
+            Close();
+            main.user = user;
+            if (main.user == "player")
+            {
+                main.createLeague.Visibility = Visibility.Collapsed;
+            }
             main.Show();
         }
 
@@ -301,7 +313,12 @@ namespace OutOfYourLeague
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
 
                 }
-                Hide();
+                Close();
+                topGoalScorers.user = user;
+                if (topGoalScorers.user == "player")
+                {
+                    topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                }
                 topGoalScorers.Show();
             }
             catch (SqlException ex)
@@ -328,7 +345,8 @@ namespace OutOfYourLeague
                     sqlDataAdapter.Fill(dataTable);
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                 }
-                Hide();
+                Close();
+                standingsForLeague.user = user;
                 standingsForLeague.Show();
             }
             catch (SqlException ex)

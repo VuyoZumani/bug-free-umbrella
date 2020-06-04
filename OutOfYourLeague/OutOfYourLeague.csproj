@@ -96,7 +96,13 @@
     <Compile Include="Fixtures.xaml.cs">
       <DependentUpon>Fixtures.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="Signup.xaml.cs">
+      <DependentUpon>Signup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StandingsForLeague.xaml.cs">
       <DependentUpon>StandingsForLeague.xaml</DependentUpon>
     </Compile>
@@ -130,13 +136,14 @@
     <Compile Include="CreateLeague.xaml.cs">
       <DependentUpon>CreateLeague.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Signup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="StandingsForLeague.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

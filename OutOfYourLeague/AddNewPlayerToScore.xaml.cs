@@ -21,6 +21,7 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class AddNewPlayerToScore : Window
     {
+        public string user = "";
         public AddNewPlayerToScore()
         {
             InitializeComponent();
@@ -49,8 +50,8 @@ namespace OutOfYourLeague
                     main.con.Open();                   
                     SqlCommand cmd = new SqlCommand();
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (@player,@teamofplayer,@goals)";
-                    cmd.Parameters.AddWithValue("@player",player.Text);
+                    cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (@player, @teamofplayer, @goals)";
+                    cmd.Parameters.AddWithValue("@player", player.Text);
                     cmd.Parameters.AddWithValue("@teamofplayer", teamofplayer.SelectedItem.ToString());
                     cmd.Parameters.AddWithValue("@goals", goals.Text);
                     cmd.Connection = main.con;
@@ -78,7 +79,7 @@ namespace OutOfYourLeague
         {
             //Go back to main window
             MainWindow main = new MainWindow();
-            Hide();
+            Close();
             main.Show();
         }
 
@@ -100,7 +101,8 @@ namespace OutOfYourLeague
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
 
                 }
-                Hide();
+                Close();
+                topGoalScorers.user = user;
                 topGoalScorers.Show();
             }
             catch (SqlException ex)

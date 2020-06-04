@@ -21,52 +21,24 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class TopGoalScorers : Window
     {
+        public string user = "";
         public TopGoalScorers()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow main = new MainWindow();
-            //Load the AddNewPlayer window
-            AddNewPlayerToScore addNewPlayerToScore = new AddNewPlayerToScore();
-            try
-            {
-                using (main.con)
-                {
-                    main.con.Open();
-                    //get teams to appear in the combobox
-                    using (SqlCommand sqlCommand = new SqlCommand(" SELECT team " +
-                                                                    " FROM league" +
-                                                                    " ORDER BY Points DESC;", main.con))
-                    {
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader != null)
-                            {
-                                while (sqlDataReader.Read())
-                                {
-                                    addNewPlayerToScore.teamofplayer.Items.Add(sqlDataReader["team"].ToString());
-                                }
-                            }
-                        }
-                    }
-                }
-                Hide();
-                addNewPlayerToScore.Show();
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }         
-        }
+
 
         private void main_Click(object sender, RoutedEventArgs e)
         {
             //Go back to main window
             MainWindow main = new MainWindow();
-            Hide();
+            Close();
+            main.user = user;
+            if (main.user == "player")
+            {
+                main.createLeague.Visibility = Visibility.Collapsed;
+            }
             main.Show();
         }
 
@@ -89,7 +61,8 @@ namespace OutOfYourLeague
                     sqlDataAdapter.Fill(dataTable);
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                 }
-                Hide();
+                Close();
+                standingsForLeague.user = user;
                 standingsForLeague.Show();
             }
             catch (SqlException ex)
@@ -109,7 +82,7 @@ namespace OutOfYourLeague
                 {
                     main.con.Open();
                     //get first week of fixture
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft, scoreleft, scoreright, teamonright  " +
                                                                        "FROM fixturesorted " +
                                                                        "WHERE week=1;"
                                                                        , main.con);
@@ -140,13 +113,55 @@ namespace OutOfYourLeague
                         }
                     }
                 }
-                Hide();
+                Close();
+                fixtures.user = user;
+                if (fixtures.user == "player")
+                {
+                    fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                }
                 fixtures.Show();
             }
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.ToString());
             }         
+        }
+
+        private void addplayer_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            //Load the AddNewPlayer window
+            AddNewPlayerToScore addNewPlayerToScore = new AddNewPlayerToScore();
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    //get teams to appear in the combobox
+                    using (SqlCommand sqlCommand = new SqlCommand(" SELECT team " +
+                                                                    " FROM league" +
+                                                                    " ORDER BY Points DESC;", main.con))
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            if (sqlDataReader != null)
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    addNewPlayerToScore.teamofplayer.Items.Add(sqlDataReader["team"].ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+                Hide();
+                addNewPlayerToScore.user = user;
+                addNewPlayerToScore.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

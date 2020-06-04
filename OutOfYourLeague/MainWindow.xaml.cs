@@ -23,19 +23,25 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class MainWindow : Window
     {
+
         static string connectionstring = ConfigurationManager.ConnectionStrings["OutOfYourLeague.Properties.Settings.Setting"].ConnectionString;
         public SqlConnection con = new SqlConnection(connectionstring);
+        public string user = "";
         public MainWindow()
         {
             InitializeComponent();
         }
        
         private void createLeague_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             //Go to CreateLeague Window
             CreateLeague league = new CreateLeague();
-            Hide();
-            league.Show();    
+            Close();
+            league.user = user;
+            league.Show();
+            //MainWindow main = new MainWindow();
+            //main.createLeague.Visibility = Visibility.Collapsed;
+            //main.Show();
         }
 
         private void loadLeague_Click(object sender, RoutedEventArgs e)
@@ -44,9 +50,10 @@ namespace OutOfYourLeague
             try
             {
                 StandingsForLeague standingsForLeague = new StandingsForLeague();
-                using (con)
+                MainWindow main = new MainWindow();
+                using (main.con)
                 {
-                    con.Open();
+                    main.con.Open();
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
                                                                        " FROM league" +
                                                                        " ORDER BY Points DESC;"
@@ -55,7 +62,8 @@ namespace OutOfYourLeague
                     sqlDataAdapter.Fill(dataTable);
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                 }
-                Hide();
+                Close();
+                standingsForLeague.user = user;
                 standingsForLeague.Show();
             }
             catch(SqlException ex)
@@ -74,7 +82,7 @@ namespace OutOfYourLeague
                 {
                     con.Open();
                     //get first week of fixture
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft, scoreleft, scoreright, teamonright  " +
                                                                        "FROM fixturesorted " +
                                                                        "WHERE week=1;"
                                                                        , con);
@@ -106,6 +114,11 @@ namespace OutOfYourLeague
                     }
                 }
                 Hide();
+                fixtures.user = user;
+                if (fixtures.user == "player")
+                {
+                    fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                }
                 fixtures.Show();
             }
             catch (SqlException ex)
@@ -131,6 +144,11 @@ namespace OutOfYourLeague
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
                 }
                 Hide();
+                topGoalScorers.user = user;
+                if (topGoalScorers.user == "player")
+                {
+                    topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                }
                 topGoalScorers.Show();
             }
             catch (SqlException ex)

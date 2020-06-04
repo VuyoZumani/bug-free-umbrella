@@ -9,12 +9,13 @@
     <Grid>
 
         <DataGrid x:Name="fixtures" HorizontalAlignment="Left" Height="282" Margin="25,10,0,0" VerticalAlignment="Top" Width="537"/>
-        <Button x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="217,306,0,0" VerticalAlignment="Top" Width="150" Height="34" Click="Button_Click" RenderTransformOrigin="-0.32,0.739"/>
-        <ComboBox Name="weeks" HorizontalAlignment="Left" Margin="588,35,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged">
+        <Button x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="197,366,0,0" VerticalAlignment="Top" Width="190" Height="34" Click="Button_Click" RenderTransformOrigin="-0.32,0.739"/>
+        <ComboBox Name="weeks" HorizontalAlignment="Left" Margin="588,61,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged">
         </ComboBox>
-        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="25,364,0,0" VerticalAlignment="Top" Width="130" Height="25" Click="main_Click"/>
-        <Button x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="225,364,0,0" VerticalAlignment="Top" Width="130" Height="23" Click="standings_Click"/>
-        <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="431,364,0,0" VerticalAlignment="Top" Width="130" Height="23" Click="topgoalscorers_Click"/>
+        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="25,310,0,0" VerticalAlignment="Top" Width="130" Height="25" Click="main_Click"/>
+        <Button x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="225,310,0,0" VerticalAlignment="Top" Width="142" Height="25" Click="standings_Click"/>
+        <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="432,312,0,0" VerticalAlignment="Top" Width="130" Height="23" Click="topgoalscorers_Click"/>
+        <Label Content="Week" HorizontalAlignment="Left" Margin="642,18,0,0" VerticalAlignment="Top" Width="70"/>
 
     </Grid>
 </Window>

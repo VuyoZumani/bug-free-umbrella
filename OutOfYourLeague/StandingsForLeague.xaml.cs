@@ -21,6 +21,7 @@ namespace OutOfYourLeague
     /// </summary>
     public partial class StandingsForLeague : Window
     {
+        public string user = "";
         public StandingsForLeague()
         {
             InitializeComponent();
@@ -35,7 +36,12 @@ namespace OutOfYourLeague
         {
             //Go back to main window
             MainWindow main = new MainWindow();
-            Hide();
+            Close();
+            main.user = user;
+            if (main.user == "player")
+            {
+                main.createLeague.Visibility = Visibility.Collapsed;
+            }
             main.Show();
         }
 
@@ -50,7 +56,7 @@ namespace OutOfYourLeague
                 {
                     main.con.Open();
                     //get first week of fixture
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft,scoreleft,scoreright,teamonright  " +
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft, scoreleft, scoreright, teamonright  " +
                                                                        "FROM fixturesorted " +
                                                                        "WHERE week=1;"
                                                                        , main.con);
@@ -81,7 +87,12 @@ namespace OutOfYourLeague
                         }
                     }
                 }
-                Hide();
+                Close();
+                fixtures.user = user;
+                if (fixtures.user == "player")
+                {
+                    fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                }
                 fixtures.Show();
             }
             catch (SqlException ex)
@@ -108,7 +119,12 @@ namespace OutOfYourLeague
                     topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
 
                 }
-                Hide();
+                Close();
+                topGoalScorers.user = user;
+                if (topGoalScorers.user == "player")
+                {
+                    topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                }
                 topGoalScorers.Show();
             }
             catch (SqlException ex)

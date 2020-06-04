@@ -93,3 +93,5 @@ C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\AddNe
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\TopGoalScorers.g.cs
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\AddNewPlayerToScore.baml
 C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\TopGoalScorers.baml
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\Signup.g.cs
+C:\Users\g17z1278\Source\Repos\bug-free-umbrella\OutOfYourLeague\obj\Debug\Signup.baml

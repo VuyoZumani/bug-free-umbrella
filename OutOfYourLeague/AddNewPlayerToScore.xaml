@@ -8,12 +8,14 @@
         Title="AddNewPlayerToScore" Height="450" Width="800">
     <Grid>
         <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="157,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="492" TextChanged="TextBox_TextChanged"/>
-        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="153,71,0,0" VerticalAlignment="Top" Width="496" SelectionChanged="teamofplayer_SelectionChanged"/>
-        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="160,248,0,0" VerticalAlignment="Top" Width="489" Height="66" Click="addplayer_Click"/>
-        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="40" Margin="168,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="481"/>
-        <Label Content="Enter number of goals the player scored:" HorizontalAlignment="Left" Margin="160,108,0,0" VerticalAlignment="Top" Width="489"/>
+        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="160,71,0,0" VerticalAlignment="Top" Width="489" SelectionChanged="teamofplayer_SelectionChanged"/>
+        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="160,222,0,0" VerticalAlignment="Top" Width="489" Height="66" Click="addplayer_Click"/>
+        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="40" Margin="157,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="492"/>
+        <Label Content="Goals scored:" HorizontalAlignment="Left" Margin="33,141,0,0" VerticalAlignment="Top" Width="95"/>
         <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="160,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="main_Click"/>
         <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="529,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="topgoalscorers_Click"/>
+        <Label Content="Name of player:" HorizontalAlignment="Left" Margin="33,16,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label Content="Team:" HorizontalAlignment="Left" Margin="33,71,0,0" VerticalAlignment="Top" Width="95" Height="22"/>
 
     </Grid>
 </Window>

@@ -130,7 +130,7 @@ namespace OutOfYourLeague
                     dataTable.Columns[3].ReadOnly = true;
                     fixtures.fixtures.ItemsSource = dataTable.DefaultView;
                 }
-                Hide();
+                Close();
                 
                 fixtures.Show();
             }

@@ -5,13 +5,100 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="TopGoalScorers" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="topgoalscorers" HorizontalAlignment="Left" Height="268" Margin="10,10,0,0" VerticalAlignment="Top" Width="710"/>
-        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Width="199" Height="27" Click="main_Click"/>
-        <Button x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="255,300,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="standings_Click"/>
-        <Button x:Name="fixtures" Content="Fixtures" HorizontalAlignment="Left" Margin="520,300,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="fixtures_Click"/>
-        <Button x:Name="addplayer" Content="Add player" HorizontalAlignment="Left" Margin="230,349,0,0" VerticalAlignment="Top" Width="251" Height="44" Click="addplayer_Click"/>
+        Title="TopGoalScorers" Height="450" Width="800" Icon="Resources/finalicon.png">
+    <Window.Resources>
+        <Style x:Key="datagrid" TargetType="DataGrid">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource chbackground}"/>
+            <Setter Property="AlternatingRowBackground" Value="Silver"/>
+            <Setter Property="Foreground" Value="#FF060A34"/>
+            <Setter Property="ColumnWidth" Value="*"/>
+            <Setter Property="CanUserAddRows" Value="false"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
 
+        </Style>
+        <Style x:Key="chbackground" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF060A34"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid>
+
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                    <Rectangle.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#666666" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Stroke>
+                </Rectangle>
+                <Rectangle x:Name="xShine" 
+                           Margin="2,2,2,0" 
+                           VerticalAlignment="Top" 
+                           RadiusX="6" 
+                           RadiusY="6"
+                           Opacity="1"
+                           Stroke="Transparent"
+                           Height="15px">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#ccffffff" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Navy" Offset="0"/>
+                                <GradientStop Color="Black" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Silver" Offset="0"/>
+                                <GradientStop Color="#008080" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <DataGrid Height="auto" Style="{DynamicResource datagrid}" x:Name="topgoalscorers" HorizontalAlignment="Right" Margin="0,75,400,0" VerticalAlignment="Top" Width="362"/>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="565,27,0,0" VerticalAlignment="Top" Width="199" Height="27" Click="main_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="565,82,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="standings_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="fixtures" Content="Fixtures" HorizontalAlignment="Left" Margin="565,133,0,0" VerticalAlignment="Top" Width="200" Height="25" Click="fixtures_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="addplayer" Content="Add player" HorizontalAlignment="Left" Margin="90,280,0,0" VerticalAlignment="Top" Width="251" Height="44" Click="addplayer_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Grid.Background>
+            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+        </Grid.Background>
     </Grid>
 </Window>

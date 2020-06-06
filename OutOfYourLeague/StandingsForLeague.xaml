@@ -5,13 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="StandingsForLeague" Height="450" Width="800">
-    <Grid>
-        <DataGrid Name="league"  HorizontalAlignment="Left" Height="339" Margin="35,10,0,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
-        </DataGrid>
-        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click"/>
-        <Button Content="Fixtures" HorizontalAlignment="Left" Margin="303,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click"/>
-        <Button Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,358,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1"/>
+        Title="StandingsForLeague" Height="450" Width="800" Icon="Resources/finalicon.png">
+    <Window.Resources>
+        <Style x:Key="datagrid" TargetType="DataGrid">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource chbackground}"/>
+            <Setter Property="AlternatingRowBackground" Value="Silver"/>
+            <Setter Property="Foreground" Value="#FF060A34"/>
+            <Setter Property="ColumnWidth" Value="*"/>
+            <Setter Property="CanUserAddRows" Value="false"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            
+        </Style>
+        <Style x:Key="chbackground" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF060A34"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+       
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid>
 
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                    <Rectangle.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#666666" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Stroke>
+                </Rectangle>
+                <Rectangle x:Name="xShine" 
+                           Margin="2,2,2,0" 
+                           VerticalAlignment="Top" 
+                           RadiusX="6" 
+                           RadiusY="6"
+                           Opacity="1"
+                           Stroke="Transparent"
+                           Height="15px">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#ccffffff" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Navy" Offset="0"/>
+                                <GradientStop Color="Black" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Silver" Offset="0"/>
+                                <GradientStop Color="#008080" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <DataGrid Name="league" Height="auto" Style="{DynamicResource datagrid}"  HorizontalAlignment="Center" Margin="35,57,30,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
+         
+        </DataGrid>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Grid.Background>
+            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+        </Grid.Background>
     </Grid>
 </Window>

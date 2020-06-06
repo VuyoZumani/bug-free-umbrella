@@ -5,17 +5,92 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="AddNewPlayerToScore" Height="450" Width="800">
+        Title="AddNewPlayerToScore" Height="450" Width="800" Icon="Resources/finalicon.png">
+    <Window.Resources>
+        <ControlTemplate x:Key="largelabel" TargetType="Label">
+            <Grid>
+                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+            </Grid>
+
+        </ControlTemplate>
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid>
+
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                    <Rectangle.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#666666" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Stroke>
+                </Rectangle>
+                <Rectangle x:Name="xShine" 
+                           Margin="2,2,2,0" 
+                           VerticalAlignment="Top" 
+                           RadiusX="6" 
+                           RadiusY="6"
+                           Opacity="1"
+                           Stroke="Transparent"
+                           Height="15px">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#ccffffff" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Navy" Offset="0"/>
+                                <GradientStop Color="Black" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Silver" Offset="0"/>
+                                <GradientStop Color="#008080" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid>
-        <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="157,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="492" TextChanged="TextBox_TextChanged"/>
-        <ComboBox Name="teamofplayer" HorizontalAlignment="Left" Margin="160,71,0,0" VerticalAlignment="Top" Width="489" SelectionChanged="teamofplayer_SelectionChanged"/>
-        <Button x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="160,222,0,0" VerticalAlignment="Top" Width="489" Height="66" Click="addplayer_Click"/>
-        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="40" Margin="157,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="492"/>
-        <Label Content="Goals scored:" HorizontalAlignment="Left" Margin="33,141,0,0" VerticalAlignment="Top" Width="95"/>
-        <Button x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="160,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="main_Click"/>
-        <Button x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="529,343,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="topgoalscorers_Click"/>
-        <Label Content="Name of player:" HorizontalAlignment="Left" Margin="33,16,0,0" VerticalAlignment="Top" Width="95"/>
-        <Label Content="Team:" HorizontalAlignment="Left" Margin="33,71,0,0" VerticalAlignment="Top" Width="95" Height="22"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+        </Grid.Background>
+        <TextBox x:Name="player" HorizontalAlignment="Left" Height="36" Margin="223,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="358" TextChanged="TextBox_TextChanged"/>
+        <ComboBox Foreground="#FF060A34" Name="teamofplayer" HorizontalAlignment="Left" Margin="223,71,0,0" VerticalAlignment="Top" Width="358" SelectionChanged="teamofplayer_SelectionChanged" Height="42"/>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" Margin="223,222,0,0" VerticalAlignment="Top" Width="358" Height="66" Click="addplayer_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+
+        <TextBox x:Name="goals" HorizontalAlignment="Left" Height="40" Margin="223,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="358"/>
+        <Label Template="{StaticResource largelabel}" Content="Goals scored:" HorizontalAlignment="Left" Margin="33,141,0,0" VerticalAlignment="Top" Width="148"/>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="662,12,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="main_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="662,73,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="topgoalscorers_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Label Template="{StaticResource largelabel}"  Content="Name of player:" HorizontalAlignment="Left" Margin="33,16,0,0" VerticalAlignment="Top" Width="184"/>
+        <Label Template="{StaticResource largelabel}" Content="Team:" HorizontalAlignment="Left" Margin="33,71,0,0" VerticalAlignment="Top" Width="184" Height="42"/>
 
     </Grid>
 </Window>

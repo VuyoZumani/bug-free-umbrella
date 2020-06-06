@@ -5,14 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800">
-    <Grid>
-        <Label Content="username:" HorizontalAlignment="Left" Margin="85,138,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.309,1.662" Height="29" Width="115"/>
-        <Label Content="password:" HorizontalAlignment="Left" Margin="85,215,0,0" VerticalAlignment="Top" Width="115"/>
-        <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="327,144,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
-        <PasswordBox Name="password"  HorizontalAlignment="Left" Margin="327,215,0,0" VerticalAlignment="Top" Height="26" Width="158"/>
-        <Button x:Name="signup" Content="Sign up" HorizontalAlignment="Left" Margin="85,325,0,0" VerticalAlignment="Top" Width="140" Height="32" RenderTransformOrigin="-0.595,0.812" Click="signup_Click"/>
-        <Button x:Name="signin" Content="Sign in" HorizontalAlignment="Left" Margin="345,325,0,0" VerticalAlignment="Top" Width="140" Height="32" Click="signin_Click"/>
+        Title="Login" Height="450" Width="800" Icon="Resources/finalicon.png">
+    <Window.Resources>
+        <ControlTemplate x:Key="textboxwithtext" TargetType="TextBox">
+            <Grid>
+                <TextBox FontSize="14" Text="{TemplateBinding Text}"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="largelabel" TargetType="Label">
+            <Grid>
+                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+            </Grid>
 
+        </ControlTemplate>
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid>
+
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                    <Rectangle.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#666666" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Stroke>
+                    <Rectangle.Effect>
+                        <DropShadowEffect/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <Rectangle x:Name="xShine" 
+                           Margin="2,2,2,0" 
+                           VerticalAlignment="Top" 
+                           RadiusX="6" 
+                           RadiusY="6"
+                           Opacity="1"
+                           Stroke="Transparent"
+                           Height="15px">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#ccffffff" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+
+                </Rectangle>
+
+                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Navy" Offset="0"/>
+                                <GradientStop Color="Black" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter Property="Fill" TargetName="xBackground">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Silver" Offset="0"/>
+                                <GradientStop Color="#008080" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Label Template="{StaticResource largelabel}" Content="username:" HorizontalAlignment="Left" Margin="30,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.309,1.662" Height="35" Width="115"/>
+        <Label Template="{StaticResource largelabel}" Content="password:" HorizontalAlignment="Left" Margin="30,151,0,0" VerticalAlignment="Top" Width="115"/>
+        <TextBox  x:Name="username" HorizontalAlignment="Left" Height="35" Margin="128,90,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
+        <PasswordBox Name="password"  HorizontalAlignment="Left" Margin="128,150,0,0" VerticalAlignment="Top" Height="35" Width="158"/>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="signup" Content="Sign up" HorizontalAlignment="Left" Margin="128,349,0,0" VerticalAlignment="Top" Width="158" Height="32" RenderTransformOrigin="-0.595,0.812" Click="signup_Click"/>
+        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="signin" Content="Sign in" HorizontalAlignment="Left" Margin="128,210,0,0" VerticalAlignment="Top" Width="158" Height="32" Click="signin_Click"/>
+        <Label Template="{StaticResource largelabel}" Content="Not signed up yet?" HorizontalAlignment="Left" Margin="129,314,0,0" VerticalAlignment="Top" Width="172"/>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+        </Grid.Background>
     </Grid>
 </Window>

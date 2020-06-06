@@ -72,5 +72,12 @@ namespace OutOfYourLeague
             Login login = new Login();
             login.Show();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            Login login = new Login();
+            login.Show();
+        }
     }
 }

@@ -107,7 +107,7 @@ namespace OutOfYourLeague
                         if (officialid != "")
                         {
                             //show enter app
-                            MessageBox.Show($"Welcome back {name}");
+                            MessageBox.Show($"Welcome back official {name}");
                             main.user = "official";
                             main.con = con;
                             main.Show();
@@ -115,6 +115,7 @@ namespace OutOfYourLeague
                         else
                         {
                             //view only and check stats
+                            MessageBox.Show($"Welcome back {name}");
                             main.user = "player";
                             main.con = con;
                             main.createLeague.Visibility = Visibility.Collapsed;

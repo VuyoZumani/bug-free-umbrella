@@ -274,6 +274,7 @@ namespace OutOfYourLeague
         {
             //Go back to main window
             MainWindow main = new MainWindow();
+            Close();
             main.Show();
         }
     }

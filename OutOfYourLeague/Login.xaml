@@ -5,23 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800" Icon="Resources/finalicon.png">
+        Title="Login" Height="450" MinHeight="450" MaxHeight="450" Width="800" MaxWidth="800" MinWidth="800" Icon="Resources/finalicon.png">
     <Window.Resources>
+
         <ControlTemplate x:Key="textboxwithtext" TargetType="TextBox">
             <Grid>
-                <TextBox FontSize="14" Text="{TemplateBinding Text}"/>
+
+                <TextBlock x:Name="xBackgroundtxt"  Opacity="1"  Background="{TemplateBinding Background}" >
+
+                    <TextBlock.Effect>
+                        <DropShadowEffect/>
+                    </TextBlock.Effect>
+                </TextBlock>
             </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="passwordboxwithtext" TargetType="PasswordBox">
+            <Grid>
+                <Rectangle x:Name="xBackgroundtxt"  Opacity="1"  Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                    <Rectangle.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#666666" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Stroke>
+                    <Rectangle.Effect>
+                        <DropShadowEffect/>
+                    </Rectangle.Effect>
+                </Rectangle>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="xBackgroundtxt">
+                        <Setter.Value>
+                            <RadialGradientBrush>
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#666666" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
         </ControlTemplate>
         <ControlTemplate x:Key="largelabel" TargetType="Label">
             <Grid>
-                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+                <Label FontSize="18" Foreground="#FF060A34" Content="{TemplateBinding Content}"/>
             </Grid>
-
         </ControlTemplate>
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
             <Grid>
-
-                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                <Rectangle x:Name="xBackground"  Opacity="1" RadiusX="9" RadiusY="9" Fill="#FF060A34" StrokeThickness="0.35" >
                     <Rectangle.Stroke>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="White" Offset="0"/>
@@ -46,9 +78,7 @@
                             <GradientStop Color="Transparent" Offset="1"/>
                         </LinearGradientBrush>
                     </Rectangle.Fill>
-
                 </Rectangle>
-
                 <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
             <ControlTemplate.Triggers>
@@ -71,21 +101,33 @@
                             </RadialGradientBrush>
                         </Setter.Value>
                     </Setter>
+
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <Label Template="{StaticResource largelabel}" Content="username:" HorizontalAlignment="Left" Margin="30,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.309,1.662" Height="35" Width="115"/>
-        <Label Template="{StaticResource largelabel}" Content="password:" HorizontalAlignment="Left" Margin="30,151,0,0" VerticalAlignment="Top" Width="115"/>
-        <TextBox  x:Name="username" HorizontalAlignment="Left" Height="35" Margin="128,90,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
-        <PasswordBox Name="password"  HorizontalAlignment="Left" Margin="128,150,0,0" VerticalAlignment="Top" Height="35" Width="158"/>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="signup" Content="Sign up" HorizontalAlignment="Left" Margin="128,349,0,0" VerticalAlignment="Top" Width="158" Height="32" RenderTransformOrigin="-0.595,0.812" Click="signup_Click"/>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="signin" Content="Sign in" HorizontalAlignment="Left" Margin="128,210,0,0" VerticalAlignment="Top" Width="158" Height="32" Click="signin_Click"/>
-        <Label Template="{StaticResource largelabel}" Content="Not signed up yet?" HorizontalAlignment="Left" Margin="129,314,0,0" VerticalAlignment="Top" Width="172"/>
+        <Label Template="{StaticResource largelabel}" Content="username:" HorizontalAlignment="Left" Margin="296,129,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.309,1.662" Height="40" Width="115"/>
+        <Label Template="{StaticResource largelabel}" Content="password:" HorizontalAlignment="Left" Margin="296,201,0,0" VerticalAlignment="Top" Width="115"/>
+        <TextBox GotFocus="username_GotFocus"   x:Name="username" HorizontalAlignment="Left" Height="35" Margin="296,169,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="190"/>
+        <PasswordBox GotFocus="password_GotFocus" Name="password"  HorizontalAlignment="Left" Margin="296,235,0,0" VerticalAlignment="Top" Height="35" Width="190"/>
+        <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14"  x:Name="signup" Content="Sign up" HorizontalAlignment="Left" Margin="296,358,0,0" VerticalAlignment="Top" Width="190" Height="32" RenderTransformOrigin="-0.595,0.812" Click="signup_Click"/>
+        <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14"  x:Name="signin" Content="Sign in" HorizontalAlignment="Left" Margin="296,275,0,0" VerticalAlignment="Top" Width="190" Height="32" Click="signin_Click"/>
+        <Label Template="{StaticResource largelabel}" Content="Not signed up yet?" HorizontalAlignment="Left" Margin="296,324,0,0" VerticalAlignment="Top" Width="172"/>
+        <Rectangle Stroke="Transparent" HorizontalAlignment="Left" Height="100" Margin="347,30,0,0"  VerticalAlignment="Top" Width="100">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="usericon.jpg"/>
+            </Rectangle.Fill>
 
+                    </Rectangle>
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="253,10,0,0" StrokeThickness="0.35" VerticalAlignment="Top" Width="284">
+            
+        </Rectangle>
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

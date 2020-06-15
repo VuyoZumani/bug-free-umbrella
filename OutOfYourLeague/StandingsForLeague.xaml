@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="StandingsForLeague" Height="450" Width="800" Icon="Resources/finalicon.png">
+        Title="StandingsForLeague" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth="800" MaxWidth="800" Icon="Resources/finalicon.png">
     <Window.Resources>
         <Style x:Key="datagrid" TargetType="DataGrid">
             <Setter Property="ColumnHeaderStyle" Value="{DynamicResource chbackground}"/>
@@ -27,13 +27,16 @@
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
             <Grid>
 
-                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="#FF060A34" StrokeThickness="0.35" >
                     <Rectangle.Stroke>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="White" Offset="0"/>
                             <GradientStop Color="#666666" Offset="1"/>
                         </LinearGradientBrush>
                     </Rectangle.Stroke>
+                    <Rectangle.Effect>
+                        <DropShadowEffect/>
+                    </Rectangle.Effect>
                 </Rectangle>
                 <Rectangle x:Name="xShine" 
                            Margin="2,2,2,0" 
@@ -77,24 +80,10 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <DataGrid Name="league" Height="auto" Style="{DynamicResource datagrid}"  HorizontalAlignment="Center" Margin="35,57,30,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70">
-         
-        </DataGrid>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
+        <DataGrid Name="league" Height="auto" Style="{DynamicResource datagrid}"  HorizontalAlignment="Center" Margin="35,57,30,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1"/>
         <Grid.Background>
             <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
         </Grid.Background>

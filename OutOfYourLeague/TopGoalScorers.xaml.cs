@@ -35,10 +35,6 @@ namespace OutOfYourLeague
             MainWindow main = new MainWindow();
             Close();
             main.user = user;
-            if (main.user == "player")
-            {
-                main.createLeague.Visibility = Visibility.Collapsed;
-            }
             main.Show();
         }
 

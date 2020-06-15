@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace OutOfYourLeague
 {
@@ -294,10 +295,6 @@ namespace OutOfYourLeague
             MainWindow main = new MainWindow();
             Close();
             main.user = user;
-            if (main.user == "player")
-            {
-                main.createLeague.Visibility = Visibility.Collapsed;
-            }
             main.Show();
         }
 

@@ -34,6 +34,8 @@ namespace OutOfYourLeague
        
         private void createLeague_Click(object sender, RoutedEventArgs e)
         {
+            //Check if league has been already been created
+
             //Go to CreateLeague Window
             CreateLeague league = new CreateLeague();
             Close();
@@ -172,6 +174,102 @@ namespace OutOfYourLeague
             {
                 MessageBox.Show(ex.ToString());
             }         
+        }
+
+        private void topgoalscorer_Click(object sender, RoutedEventArgs e)
+        {
+            TopGoalScorers topGoalScorers = new TopGoalScorers();
+            //Loading the topgoalscorer data
+            try
+            {
+                using (con)
+                {
+                    con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *" +
+                                                                       "FROM topgoalscorers;"
+                                                                       , con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    topGoalScorers.user = user;
+                    if (topGoalScorers.user == "player")
+                    {
+                        topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[2].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[1].ReadOnly = true;
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+                }
+                Hide();
+                topGoalScorers.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void fixtures_Click(object sender, RoutedEventArgs e)
+        {
+            //Load fixture for each week default is the first week for now...
+            Fixtures fixtures = new Fixtures();
+            try
+            {
+                using (con)
+                {
+                    con.Open();
+                    //get first week of fixture
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamonleft, scoreleft, scoreright, teamonright  " +
+                                                                       "FROM fixturesorted " +
+                                                                       "WHERE week=1;"
+                                                                       , con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+
+                    StandingsForLeague standingsForLeague = new StandingsForLeague();
+                    string lastweek = "";
+                    //get all the weeks to appear on the combobox
+                    using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
+                                                                    " FROM fixturesorted;"
+                                                                    , con))
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            if (sqlDataReader != null)
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    if (lastweek != sqlDataReader["week"].ToString())
+                                    {
+                                        fixtures.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
+                                        lastweek = sqlDataReader["week"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    fixtures.user = user;
+                    if (fixtures.user == "player")
+                    {
+                        fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[1].ReadOnly = true;
+                        dataTable.Columns[2].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[3].ReadOnly = true;
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                }
+                Close();
+
+                fixtures.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

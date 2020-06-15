@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace OutOfYourLeague
 {
@@ -39,41 +40,57 @@ namespace OutOfYourLeague
 
         private void addplayer_Click(object sender, RoutedEventArgs e)
         {
-            //add a goal scorer to the topgoalscorers table
-            MainWindow main = new MainWindow();
-
-            TopGoalScorers topGoalScorers = new TopGoalScorers();
-            try
-            {               
-                using (main.con)
-                {
-                    main.con.Open();                   
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (@player, @teamofplayer, @goals)";
-                    cmd.Parameters.AddWithValue("@player", player.Text);
-                    cmd.Parameters.AddWithValue("@teamofplayer", teamofplayer.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("@goals", goals.Text);
-                    cmd.Connection = main.con;
-                    cmd.ExecuteNonQuery();
-                    //Loading the topgoalscorer data
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
-                                                                       " FROM topgoalscorers" +
-                                                                       " ORDER BY goals DESC;"
-                                                                       , main.con);
-                    DataTable dataTable = new DataTable();
-                    sqlDataAdapter.Fill(dataTable);
-                    dataTable.Columns[0].ReadOnly = true;
-                    dataTable.Columns[1].ReadOnly = true;
-                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
-                }
-                Hide();
-                topGoalScorers.Show();
-            }
-            catch (SqlException ex)
+            //validation
+            if (player.Text == "")
             {
-                MessageBox.Show(ex.ToString());
+                player.BorderBrush = Brushes.Red;
             }
+            else if (teamofplayer.SelectedItem.ToString() == "")
+            {
+                teamofplayer.BorderBrush = Brushes.Red;
+            }
+            else if (!Regex.Match(goals.Text, @"^\d*$").Success)
+            {
+                MessageBox.Show("Goal has to be a whole number", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else 
+            {
+                //add a goal scorer to the topgoalscorers table
+                MainWindow main = new MainWindow();
+                TopGoalScorers topGoalScorers = new TopGoalScorers();
+                try
+                {
+                    using (main.con)
+                    {
+                        main.con.Open();
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = $"INSERT INTO topgoalscorers (player, team, goals) VALUES (@player, @teamofplayer, @goals)";
+                        cmd.Parameters.AddWithValue("@player", player.Text);
+                        cmd.Parameters.AddWithValue("@teamofplayer", teamofplayer.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@goals", goals.Text);
+                        cmd.Connection = main.con;
+                        cmd.ExecuteNonQuery();
+                        //Loading the topgoalscorer data
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                                                                           " FROM topgoalscorers" +
+                                                                           " ORDER BY goals DESC;"
+                                                                           , main.con);
+                        DataTable dataTable = new DataTable();
+                        sqlDataAdapter.Fill(dataTable);
+                        dataTable.Columns[0].ReadOnly = true;
+                        dataTable.Columns[1].ReadOnly = true;
+                        topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+                    }
+                    Hide();
+                    topGoalScorers.Show();
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            
             
         }
 
@@ -113,6 +130,21 @@ namespace OutOfYourLeague
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void player_GotFocus(object sender, RoutedEventArgs e)
+        {
+            player.BorderBrush = Brushes.White;
+        }
+
+        private void teamofplayer_GotFocus(object sender, RoutedEventArgs e)
+        {
+            teamofplayer.BorderBrush = Brushes.White;
+        }
+
+        private void goals_GotFocus(object sender, RoutedEventArgs e)
+        {
+            goals.BorderBrush = Brushes.White;
         }
     } 
 }

@@ -5,24 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="Signup" Height="450" Width="800" Icon="Resources/finalicon.png">
+        Title="Signup" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth="800" MaxWidth="800" Icon="Resources/finalicon.png">
     <Window.Resources>
+        <Style x:Key="passwordstrength" TargetType="PasswordBox">
+            <Style.Triggers>
+                <Trigger Property="PasswordChar" Value="">
+                    <Setter Property="BorderBrush" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="passwordboxCompulsory" TargetType="PasswordBox">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="false">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextboxCompulsory" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="false">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <ControlTemplate x:Key="largelabel" TargetType="Label">
             <Grid>
-                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+                <Label FontSize="18" Foreground="#FF060A34" Content="{TemplateBinding Content}"/>
             </Grid>
-
         </ControlTemplate>
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
             <Grid>
-
-                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="#FF060A34" StrokeThickness="0.35" >
                     <Rectangle.Stroke>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="White" Offset="0"/>
                             <GradientStop Color="#666666" Offset="1"/>
                         </LinearGradientBrush>
                     </Rectangle.Stroke>
+                    <Rectangle.Effect>
+                        <DropShadowEffect/>
+                    </Rectangle.Effect>
                 </Rectangle>
                 <Rectangle x:Name="xShine" 
                            Margin="2,2,2,0" 
@@ -65,25 +87,32 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    <Grid RenderTransformOrigin="0.504,0.494">
-        <Label Template="{StaticResource largelabel}" Content="Nick Name/ First Name:" HorizontalAlignment="Left" Margin="32,95,0,0" VerticalAlignment="Top" Height="41" Width="200"/>
-        <Label Template="{StaticResource largelabel}" Content="username" HorizontalAlignment="Left" Margin="32,134,0,0" VerticalAlignment="Top" Height="41" Width="132"/>
-        <Label Template="{StaticResource largelabel}" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="32,175,0,0" Height="43" Width="111"/>
-        <Label Template="{StaticResource largelabel}" Content="Confirm" HorizontalAlignment="Left" Margin="32,216,0,0" VerticalAlignment="Top" Height="43" Width="111"/>
-        <TextBox x:Name="firstname" HorizontalAlignment="Left" Height="23" Margin="250,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.649,0.774"/>
-        <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="250,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label Template="{StaticResource largelabel}" Content="An Official? Enter regID" HorizontalAlignment="Left" Margin="32,259,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.638,1.267" Height="42" Width="149"/>
-        <TextBox x:Name="officialID" HorizontalAlignment="Left" Height="23" Margin="250,260,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <PasswordBox x:Name="confirmpassword" HorizontalAlignment="Left" Margin="250,220,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
-        <PasswordBox x:Name="password" HorizontalAlignment="Left" Margin="250,180,0,0" VerticalAlignment="Top" Height="24" Width="120"/>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"  x:Name="submitsignupinfo" Content="Submit" HorizontalAlignment="Left" Margin="112,335,0,0" VerticalAlignment="Top" Width="180" Height="46" Click="submitsignupinfo_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14"   Content="Login" HorizontalAlignment="Left" Margin="676,10,0,0" VerticalAlignment="Top" Width="75" Height="36" Click="Button_Click"/>
+    <Grid >
+        <Label Template="{StaticResource largelabel}" Content="Nick Name/ First Name:" HorizontalAlignment="Left" Margin="232,95,0,0" VerticalAlignment="Top" Height="41" Width="200"/>
+        <Label Template="{StaticResource largelabel}" Content="username:" HorizontalAlignment="Left" Margin="232,134,0,0" VerticalAlignment="Top" Height="41" Width="132"/>
+        <Label Template="{StaticResource largelabel}" Content="Password:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="232,175,0,0" Height="43" Width="111"/>
+        <Label Template="{StaticResource largelabel}" Content="Confirm:" HorizontalAlignment="Left" Margin="232,216,0,0" VerticalAlignment="Top" Height="43" Width="111"/>
+        <TextBox GotFocus="firstname_GotFocus" Style="{StaticResource TextboxCompulsory}"  x:Name="firstname" HorizontalAlignment="Left" Height="23" Margin="450,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.494,0.449"/>
+        <TextBox GotFocus="username_GotFocus" Style="{StaticResource TextboxCompulsory}" x:Name="username" HorizontalAlignment="Left" Height="23" Margin="450,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Template="{StaticResource largelabel}" Content="An Official? Enter reg. ID:" HorizontalAlignment="Left" Margin="232,259,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.638,1.267" Height="42" Width="213"/>
+        <TextBox Style="{StaticResource TextboxCompulsory}" x:Name="officialID" HorizontalAlignment="Left" Height="23" Margin="450,260,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox GotFocus="confirmpassword_GotFocus" Style="{StaticResource passwordboxCompulsory}" x:Name="confirmpassword" HorizontalAlignment="Left" Margin="450,220,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
+        <PasswordBox GotFocus="password_GotFocus" Style="{StaticResource passwordboxCompulsory}" x:Name="password" HorizontalAlignment="Left" Margin="450,180,0,0" VerticalAlignment="Top" Height="24" Width="120"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14"  x:Name="submitsignupinfo" Content="Submit" HorizontalAlignment="Left" Margin="312,335,0,0" VerticalAlignment="Top" Width="180" Height="46" Click="submitsignupinfo_Click"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14"   Content="Login" HorizontalAlignment="Left" Margin="682,16,0,0" VerticalAlignment="Top" Width="80" Height="26" Click="Button_Click"/>
+        <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,140,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
+        <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,102,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
+        <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,180,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
+        <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
+        <Label Template="{StaticResource largelabel}" Content="For demo enter regID: 123" HorizontalAlignment="Left" Margin="232,296,0,0" VerticalAlignment="Top" Width="230"/>
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="184,10,0,0" StrokeThickness="0.35" VerticalAlignment="Top" Width="424">
+
+        </Rectangle>
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

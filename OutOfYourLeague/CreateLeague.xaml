@@ -5,24 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OutOfYourLeague"
         mc:Ignorable="d"
-        Title="CreateLeague" Height="450" Width="800" Icon="Resources/finalicon.png">
+        Title="CreateLeague" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth="800" MaxWidth="800" Icon="Resources/finalicon.png">
     <Window.Resources>
         <ControlTemplate x:Key="largelabel" TargetType="Label">
             <Grid>
-                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+                <Label FontSize="18" Foreground="#FF060A34" Content="{TemplateBinding Content}"/>
             </Grid>
-
         </ControlTemplate>
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
             <Grid>
-
-                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="{TemplateBinding Background}" StrokeThickness="0.35" >
+                <Rectangle x:Name="xBackground" Opacity="1" RadiusX="9" RadiusY="9" Fill="#FF060A34" StrokeThickness="0.35" >
                     <Rectangle.Stroke>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="White" Offset="0"/>
                             <GradientStop Color="#666666" Offset="1"/>
                         </LinearGradientBrush>
                     </Rectangle.Stroke>
+                    <Rectangle.Effect>
+                        <DropShadowEffect/>
+                    </Rectangle.Effect>
                 </Rectangle>
                 <Rectangle x:Name="xShine" 
                            Margin="2,2,2,0" 
@@ -66,25 +67,19 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <ListBox HorizontalAlignment="Left" Name="teams" Height="202" Margin="51,105,0,0" VerticalAlignment="Top" Width="336"/>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Add Team" Name="addTeam" HorizontalAlignment="Left" Margin="238,47,0,0" VerticalAlignment="Top" Width="149" Height="41" Click="addTeam_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <TextBox HorizontalAlignment="Left" Name="teamToBeEntered" Height="41" Margin="56,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" Content="Create" Name="create" HorizontalAlignment="Left" Margin="51,328,0,0" VerticalAlignment="Top" Width="336" RenderTransformOrigin="0.04,1.75" Height="46" Click="create_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Template="{StaticResource roundbutton}"  Background="#FF060A34" Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="662,10,0,0" VerticalAlignment="Top" Width="120" Height="41" Click="main_Click" RenderTransformOrigin="0.442,-0.531">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
+        <ListBox HorizontalAlignment="Left" Name="teams" Height="202" Margin="254,97,0,0" VerticalAlignment="Top" Width="336"/>
+        <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" Content="Add Team" Name="addTeam" HorizontalAlignment="Left" Margin="438,47,0,0" VerticalAlignment="Top" Width="149" Height="41" Click="addTeam_Click"/>
+        <TextBox GotFocus="teamToBeEntered_GotFocus" HorizontalAlignment="Left" Name="teamToBeEntered" Height="41" Margin="251,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182"/>
+        <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" Content="Create" Name="create" HorizontalAlignment="Left" Margin="253,306,0,0" VerticalAlignment="Top" Width="336" RenderTransformOrigin="0.04,1.75" Height="46" Click="create_Click"/>
+        <Label Template="{StaticResource largelabel}" Content="Name of team" HorizontalAlignment="Left" Margin="256,13,0,0" VerticalAlignment="Top" Width="177" Grid.RowSpan="2"/>
+        <!-- <Button x:Name="shuffle" FontSize="14" Foreground="White" Template="{StaticResource roundbutton}" Content="Shuffle" Grid.Column="1" HorizontalAlignment="Left" Margin="10,68,0,0" Grid.Row="2" VerticalAlignment="Top" Width="121" Height="86" Click="shuffle_Click"/>-->
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="227,10,0,0" StrokeThickness="0.35" VerticalAlignment="Top" Width="386"/>
+
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

@@ -40,8 +40,6 @@ namespace OutOfYourLeague
                     main.con.Open();
                     SqlCommand cmdcheckusertableexists = new SqlCommand();
                     cmdcheckusertableexists.CommandType = CommandType.Text;
-
-
                     //creating the league table and inserting the teams into the table and setting the initial values to zero
                     cmdcheckusertableexists.CommandText = " IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES" +
                                                           " WHERE TABLE_NAME = N'users') " +
@@ -70,65 +68,125 @@ namespace OutOfYourLeague
 
         private void signin_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow main = new MainWindow();
-            //Check if user is signed-up
-            string name = "";
-            string officialid = "";
-            try
+            //validation
+            if (username.Text == "")
             {
-                using (main.con)
+                username.BorderBrush = Brushes.Red;
+            }
+            if (password.Password == ""){
+                password.BorderBrush = Brushes.Red;
+             }
+            if(password.Password!="" && username.Text!="")
+            {
+                MainWindow main = new MainWindow();
+                //Check if user is signed-up
+                string name = "";
+                int officialidcount = 0;
+                try
                 {
-                    main.con.Open();
-                    SqlCommand cmdcheckuser = new SqlCommand();
-                    cmdcheckuser.CommandType = CommandType.Text;
-                    cmdcheckuser.CommandText = " SELECT firstname" +
-                                               " FROM users " +
-                                               " WHERE username = @username AND password = @password";
-                    cmdcheckuser.Parameters.AddWithValue("@username", username.Text);
-                    cmdcheckuser.Parameters.AddWithValue("@password", password.Password);
-                    cmdcheckuser.Connection = main.con;
                     
-                    SqlCommand cmdcheckofficial = new SqlCommand();
-                    cmdcheckofficial.CommandType = CommandType.Text;
-                    cmdcheckofficial.CommandText = " SELECT officialid" +
+                    using (main.con)
+                    {
+                        main.con.Open();
+                        SqlCommand cmdcheckleagueexists = new SqlCommand();
+                        cmdcheckleagueexists.CommandType = CommandType.Text;
+
+
+                        //creating the league table and inserting the teams into the table and setting the initial values to zero
+                        cmdcheckleagueexists.CommandText = " IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES" +
+                                                            " WHERE TABLE_NAME = N'league') " +
+                                                            " BEGIN SELECT -1 " +
+                                                            " END" +
+                                                            " ELSE SELECT 1";
+                        cmdcheckleagueexists.Connection = main.con;
+                        string g = cmdcheckleagueexists.ExecuteScalar().ToString();
+                        
+                        
+                        SqlCommand cmdcheckuser = new SqlCommand();
+                        cmdcheckuser.CommandType = CommandType.Text;
+                        cmdcheckuser.CommandText = " SELECT firstname" +
                                                     " FROM users " +
                                                     " WHERE username = @username AND password = @password";
-                    cmdcheckofficial.Parameters.AddWithValue("@username", username.Text);
-                    cmdcheckofficial.Parameters.AddWithValue("@password", password.Password);
-                    cmdcheckofficial.Connection = main.con;
-                    officialid = cmdcheckofficial.ExecuteScalar().ToString();
-                    name = Convert.ToString(cmdcheckuser.ExecuteScalar());
-                    if (name == "")
-                    {
-                        MessageBox.Show("Incorrect login details");
-                    }
-                    else
-                    {
-                        if (officialid != "")
+                        cmdcheckuser.Parameters.AddWithValue("@username", username.Text);
+                        cmdcheckuser.Parameters.AddWithValue("@password", password.Password);
+                        cmdcheckuser.Connection = main.con;
+
+                        SqlCommand cmdcheckofficial = new SqlCommand();
+                        cmdcheckofficial.CommandType = CommandType.Text;
+                        cmdcheckofficial.CommandText = " SELECT COUNT(officialid)" +
+                                                        " FROM users " +
+                                                        " WHERE username = @username AND password = @password";
+                        cmdcheckofficial.Parameters.AddWithValue("@username", username.Text);
+                        cmdcheckofficial.Parameters.AddWithValue("@password", password.Password);
+                        cmdcheckofficial.Connection = main.con;
+                        officialidcount = Convert.ToInt32(cmdcheckofficial.ExecuteScalar());
+                        name = Convert.ToString(cmdcheckuser.ExecuteScalar());
+                        if (name == "")
                         {
-                            //show enter app
-                            MessageBox.Show($"Welcome back official {name}");
-                            main.user = "official";
-                            main.con = con;
-                            main.Show();
+                            MessageBox.Show("Incorrect login details", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         else
                         {
-                            //view only and check stats
-                            MessageBox.Show($"Welcome back {name}");
-                            main.user = "player";
-                            main.con = con;
-                            main.createLeague.Visibility = Visibility.Collapsed;
-                            main.Show();                            
+                            if (g == "-1" && officialidcount != 0)
+                            {
+                                MessageBox.Show($"Welcome official {name}");
+                                CreateLeague createLeague = new CreateLeague();
+                                Close();
+                                createLeague.Show();
+
+                            }
+                            else if (officialidcount != 0)
+                            {
+                                //show enter app
+                                MessageBox.Show($"Welcome back official {name}");
+                                main.user = "official";
+                                main.con = con;
+                                Close();
+                                main.Show();
+                            }
+                            else
+                            {
+                                //view only and check stats
+                                if (g == "-1")
+                                {
+                                    MessageBox.Show($"Welcome user {name}. Enter reg123 to see what officials can do");
+                                }
+                                else
+                                {
+                                    MessageBox.Show($"Welcome back {name}");
+                                    main.user = "player";
+                                    main.con = con;
+                                    Close();
+                                    main.Show();
+                                }
+                               
+                            }
                         }
+                        
+                        
                     }
+                   
                 }
-                Close();
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
             }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            
+        }
+
+        private void password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            password.BorderBrush = Brushes.White;
+        }
+
+        private void username_GotFocus(object sender, RoutedEventArgs e)
+        {
+            username.BorderBrush = Brushes.White;
         }
     }
 }

@@ -62,6 +62,13 @@ namespace OutOfYourLeague
                                                                        , con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+                    //Show position
+                    int count = 1;
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        row[0] = $"{count}.  {row[0]}";
+                        count++;
+                    }
                     //make columns read only
                     foreach (DataColumn col in dataTable.Columns)
                     {
@@ -160,6 +167,7 @@ namespace OutOfYourLeague
                     if (topGoalScorers.user == "player")
                     {
                         topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
                         //make columns read only
                         dataTable.Columns[2].ReadOnly = true;
                     }
@@ -194,6 +202,7 @@ namespace OutOfYourLeague
                     if (topGoalScorers.user == "player")
                     {
                         topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
                         //make columns read only
                         dataTable.Columns[2].ReadOnly = true;
                     }

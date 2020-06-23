@@ -83,7 +83,7 @@
             <ColumnDefinition Width="15*"/>
             <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
-        <Viewbox HorizontalAlignment="Left" Width="271" Height="44" Margin="88,297,0,0" VerticalAlignment="Top" >
+        <Viewbox HorizontalAlignment="Left" Width="271" Height="44" Margin="88,345,0,0" VerticalAlignment="Top" >
             <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="addplayer" Content="Add player" HorizontalAlignment="Left" VerticalAlignment="Top" Width="251" Height="44" Click="addplayer_Click">
  
             </Button>
@@ -106,8 +106,12 @@
         <Viewbox Height="auto" Width="auto" HorizontalAlignment="Left" Margin="34,72,0,0" VerticalAlignment="Top" >
             <DataGrid Height="auto" Style="{DynamicResource datagrid}" x:Name="topgoalscorers" HorizontalAlignment="Right" VerticalAlignment="Top" Width="362"/>
         </Viewbox>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updatetopgoalscorer" Content="Update top goal scorers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="251" Height="44" Margin="86,266,0,0" Click="updatetopgoalscorer_Click"/>
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

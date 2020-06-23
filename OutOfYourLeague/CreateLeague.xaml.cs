@@ -14,8 +14,9 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
-using System.Collections.Generic;
 using System.Security.Cryptography;
+using Microsoft.Win32;
+using System.IO;
 
 namespace OutOfYourLeague
 {
@@ -39,6 +40,17 @@ namespace OutOfYourLeague
             }
             else
             {
+                //Check if team already added
+                int j = 0;
+                foreach ( string i in teams.Items)
+                {
+                    if (i == teams.Items[j].ToString())
+                    {
+                        teamToBeEntered.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Team already added to the league");
+                    }
+                    j++;
+                }
                 //Add team to the league listbox
                 string team = teamToBeEntered.Text;
                 teams.Items.Add(team);
@@ -70,14 +82,15 @@ namespace OutOfYourLeague
                         //creating the league table and inserting the teams into the table and setting the initial values to zero
                         cmdcreateleague.CommandText = " CREATE TABLE league (" +
                                             " Team varchar(255)," +
-                                            " P int NOT NULL," +
+                                            " MP int NOT NULL," +
                                             " W int NOT NULL," +
                                             " D int NOT NULL," +
                                             " L int NOT NULL," +
                                             " GF int NOT NULL," +
                                             " GA int NOT NULL," +
                                             " GD int NOT NULL," +
-                                            " Points int NOT NULL" +
+                                            " Points int NOT NULL, " +
+                                            " PRIMARY KEY (Team)" +
                                             ") ";
                         cmdcreateleague.Connection = main.con;
                         cmdcreateleague.ExecuteNonQuery();
@@ -102,6 +115,7 @@ namespace OutOfYourLeague
                         cmdcreatefixture.CommandText = "SELECT * INTO fixtures " +
                                             "FROM (" +
                                             "SELECT " +
+                                            " " +
                                             //"--deals with the leftside" +
                                             "   CASE WHEN team1.team>team2.team THEN team2.team " +
                                             "        ELSE team1.team " +
@@ -122,7 +136,7 @@ namespace OutOfYourLeague
                                             "CASE WHEN team1.team > team2.team THEN team2.team " +
                                             "ELSE team1.team END, " +
                                             "CASE WHEN team1.team > team2.team THEN team1.team " +
-                                            "ELSE team2.team END) AS fixtures; ";
+                                            "ELSE team2.team END) AS fixtures;";
                         cmdcreatefixture.Connection = main.con;
                         cmdcreatefixture.ExecuteNonQuery();
 
@@ -207,10 +221,11 @@ namespace OutOfYourLeague
                         cmdfixturesort.CommandText = " CREATE TABLE fixturesorted (" +
                                                     " week int NOT NULL," +
                                                     " teamonleft varchar(255)," +
-                                                    " scoreleft int ," +
+                                                    " scoreleft int , " +
+                                                    " time datetime, " +
                                                     " scoreright int ," +
-                                                    " teamonright varchar(255)" +
-                                                    ") ";
+                                                    " teamonright varchar(255)," +
+                                                    " CONSTRAINT match PRIMARY KEY (teamonright, teamonleft) ";
                         cmdfixturesort.Connection = main.con;
                         cmdfixturesort.ExecuteNonQuery();
                         //loop for inserting the now sorted fixtures in fixturesorted table
@@ -241,8 +256,9 @@ namespace OutOfYourLeague
                         cmdtopgoalscorer.CommandText = " CREATE TABLE topgoalscorers (" +
                                                         " Player varchar(255)," +
                                                         " Team varchar(255) ," +
-                                                        " Goals int " +
-                                                        ") ";
+                                                        " Goals int, " +
+                                                        " CONSTRAINT pk_topgoalscorer PRIMARY KEY (Player, Team)" +
+                                                        " ) ";
                         cmdtopgoalscorer.Connection = main.con;
                         cmdtopgoalscorer.ExecuteNonQuery();
 
@@ -302,6 +318,30 @@ namespace OutOfYourLeague
         private void teamToBeEntered_GotFocus(object sender, RoutedEventArgs e)
         {
             teamToBeEntered.BorderBrush = Brushes.White;
+        }
+        BitmapImage image;
+        private void browseimage_Click(object sender, RoutedEventArgs e)
+        {
+            //to browse for the team logo
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                teamlogo.Source = new BitmapImage(new Uri(op.FileName));
+                image= new BitmapImage(new Uri(op.FileName)); 
+            }
+        }
+
+
+        byte[] arr;
+        private void saveimage_Click(object sender, RoutedEventArgs e)
+        {
+           //save image
+           System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
+            arr = (byte[])converter.ConvertTo(image, typeof(byte[]));
         }
     }
 }

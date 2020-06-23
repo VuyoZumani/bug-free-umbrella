@@ -47,11 +47,7 @@ namespace OutOfYourLeague
 
                             SqlCommand cmdupdatefixture = new SqlCommand();
                             cmdupdatefixture.CommandType = CommandType.Text;
-                            cmdupdatefixture.CommandText = "UPDATE fixtures" +
-                                                          " SET scoreleft = @scoreleft," +
-                                                          "     scoreright = @scoreright" +
-                                                          " WHERE teamonleft = @teamonleft AND teamonright = @teamonright" +
-                                                          " UPDATE fixturesorted" +
+                            cmdupdatefixture.CommandText =" UPDATE fixturesorted" +
                                                           " SET scoreleft = @scoreleft," +
                                                           " scoreright = @scoreright " +
                                                           " WHERE teamonleft = @teamonleft AND teamonright = @teamonright; ";
@@ -79,7 +75,7 @@ namespace OutOfYourLeague
                         " FROM (" +
                         //" --number of wins a team has" +
                         "       SELECT team, Count(*) AS played" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND  (Team = teamonleft OR Team = teamonright)" +
                         "       GROUP BY team ) AS playedtable" +
                         "       WHERE  playedtable.team = league.team;" +
@@ -90,7 +86,7 @@ namespace OutOfYourLeague
                         " FROM (" +
                         //" --number of wins a team has" +
                         "       SELECT team, Count(*) AS wins" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft > scoreright AND Team = teamonleft) OR (scoreleft < scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
@@ -101,7 +97,7 @@ namespace OutOfYourLeague
                         " FROM(" +
                         //" --number of losses a team has in fixtures" +
                         "       SELECT team, Count(*) AS losses" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft < scoreright AND Team = teamonleft) OR(scoreleft > scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
@@ -112,7 +108,7 @@ namespace OutOfYourLeague
                         " FROM (" +
                         //" --number of draws a team has in fixtures" +
                         "       SELECT team, Count(*) AS draws" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL AND scoreright IS NOT NULL)  AND (scoreleft = scoreright AND team = teamonleft) OR (scoreleft = scoreright AND Team = teamonright)" +
                         "       GROUP BY team) AS wintable" +
                         " WHERE wintable.team = league.team;" +
@@ -141,14 +137,14 @@ namespace OutOfYourLeague
                         "       FROM(" +
                         //" --gets the total goals scored when playing on the left side of fixture" +
                         "       SELECT team AS team1, SUM(scoreleft) AS totalonleft" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL)  AND team = teamonleft" +
                         "       GROUP BY team" +
                         "       ) AS tableforgoalsonleft" +
                         " FULL JOIN(" +
                         //" --gets the total goals scored when on the right side of fixture" +
                         "       SELECT team AS team2, SUM(scoreright) AS totalonright" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreright IS NOT NULL)  AND team = teamonright" +
                         "       GROUP BY team) AS tableforgoalsonright" +
                         "       ON tableforgoalsonleft.team1 = tableforgoalsonright.team2) AS allinonetable) AS jointgftable" +
@@ -178,14 +174,14 @@ namespace OutOfYourLeague
                         "       FROM(" +
                         //" --gets the total goals scored against when playing on the left side of fixture" +
                         "           SELECT team AS team1, SUM(scoreright) AS totalonleft" +
-                        "           FROM fixtures, league" +
+                        "           FROM fixturesorted, league" +
                         "           WHERE (scoreright IS NOT NULL)  AND team = teamonleft" +
                         "           GROUP BY team" +
                         "           ) AS tableforgoalsagainstonleft" +
                         " FULL JOIN(" +
                         //" --gets the total goals scored against when on the right side of fixture" +
                         "       SELECT team AS team2, SUM(scoreleft) AS totalonright" +
-                        "       FROM fixtures, league" +
+                        "       FROM fixturesorted, league" +
                         "       WHERE (scoreleft IS NOT NULL)  AND team = teamonright" +
                         "       GROUP BY team) AS tableforgoalsagainstonright" +
                         "       ON tableforgoalsagainstonleft.team1 = tableforgoalsagainstonright.team2) AS allinonetable) AS jointgatable" +
@@ -222,6 +218,18 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+                    //Show position
+                    int count = 1;
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        row[0] = $"{count}.  {row[0]}";
+                        count++;
+                    }
+                    //make columns read only
+                    foreach (DataColumn col in dataTable.Columns)
+                    {
+                        col.ReadOnly = true;
+                    }
                     standingsForLeague.league.ItemsSource = dataTable.DefaultView;
                     Hide();
                     standingsForLeague.user = user;
@@ -317,6 +325,7 @@ namespace OutOfYourLeague
                     if (topGoalScorers.user == "player")
                     {
                         topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
                         //make columns read only
                         dataTable.Columns[2].ReadOnly = true;
                     }

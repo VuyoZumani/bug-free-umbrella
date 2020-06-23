@@ -120,8 +120,9 @@
             </Rectangle.Fill>
 
                     </Rectangle>
-        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="253,10,0,0" StrokeThickness="0.35" VerticalAlignment="Top" Width="284">
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="253,10,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="284">
             
+
         </Rectangle>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">

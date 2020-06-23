@@ -47,11 +47,13 @@ namespace OutOfYourLeague
                                                           " firstname varchar(255)," +
                                                           " username varchar(255)," +
                                                           " password varchar(255)," +
-                                                          " officialid varchar(255)" +
+                                                          " officialid varchar(255)," +
+                                                          " PRIMARY KEY (username)," +
+                                                          " UNIQUE (officialid) " +
                                                           ") " +
                                                           //add officialIDs for all the officials
-                                                          "INSERT INTO users (officialid) VALUES (123)"+
-                                                          "END";
+                                                          " INSERT INTO users (officialid) VALUES (123)"+
+                                                          " END";
                     cmdcheckusertableexists.Connection = main.con;
                     cmdcheckusertableexists.ExecuteNonQuery();
                 }

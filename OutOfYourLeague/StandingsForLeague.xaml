@@ -85,7 +85,10 @@
         <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click"/>
         <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1"/>
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

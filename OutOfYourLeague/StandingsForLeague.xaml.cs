@@ -122,6 +122,7 @@ namespace OutOfYourLeague
                     if (topGoalScorers.user == "player")
                     {
                         topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
                         //make columns read only
                         dataTable.Columns[2].ReadOnly = true;
                     }

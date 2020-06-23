@@ -24,7 +24,7 @@
         </Style>
         <ControlTemplate x:Key="largelabel" TargetType="Label">
             <Grid>
-                <Label FontSize="18" Foreground="LightBlue" Content="{TemplateBinding Content}"/>
+                <Label FontSize="18" Foreground="#FF060A34" Content="{TemplateBinding Content}"/>
             </Grid>
         </ControlTemplate>
         <ControlTemplate x:Key="roundbutton" TargetType="Button">
@@ -91,7 +91,10 @@
         <Label Template="{StaticResource largelabel}" Content="Week" HorizontalAlignment="Left" Margin="454,49,0,0" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.421,1.186"/>
         <DataGrid  Style="{DynamicResource datagrid}" x:Name="fixtures" HorizontalAlignment="Left" Height="auto" Margin="48,89,0,0" VerticalAlignment="Top" Width="318"/>
         <Grid.Background>
-            <ImageBrush ImageSource="/ben-hershey-ChI4eUGTpeY-unsplash.jpg" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#666666" Offset="1"/>
+            </LinearGradientBrush>
         </Grid.Background>
     </Grid>
 </Window>

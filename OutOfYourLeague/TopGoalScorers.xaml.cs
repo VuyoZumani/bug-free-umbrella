@@ -55,6 +55,13 @@ namespace OutOfYourLeague
                                                                        , main.con);
                     DataTable dataTable = new DataTable();
                     sqlDataAdapter.Fill(dataTable);
+                    //Show position
+                    int count = 1;
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        row[0] = $"{count}.  {row[0]}";
+                        count++;
+                    }
                     //make columns read only
                     foreach (DataColumn col in dataTable.Columns)
                     {
@@ -164,6 +171,37 @@ namespace OutOfYourLeague
                 Hide();
                 addNewPlayerToScore.user = user;
                 addNewPlayerToScore.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void updatetopgoalscorer_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    //Update top goal scorer tables 
+                    foreach (DataRowView dr in topgoalscorers.ItemsSource)
+
+                    {
+                          SqlCommand cmdupdatetopogoalscorer = new SqlCommand();
+                            cmdupdatetopogoalscorer.CommandType = CommandType.Text;
+                            cmdupdatetopogoalscorer.CommandText = "UPDATE topgoalscorers" +
+                                                                  " SET goals = @goals" +
+                                                                  " WHERE player = @player AND team = @team";
+                            cmdupdatetopogoalscorer.Parameters.AddWithValue("@player", dr[0]);
+                            cmdupdatetopogoalscorer.Parameters.AddWithValue("@team", dr[1]);
+                            cmdupdatetopogoalscorer.Parameters.AddWithValue("@goals", dr[2]);
+                            cmdupdatetopogoalscorer.Connection = main.con;
+                            cmdupdatetopogoalscorer.ExecuteNonQuery();                        
+                    }                    
+                }
             }
             catch (SqlException ex)
             {

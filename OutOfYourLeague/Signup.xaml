@@ -105,10 +105,10 @@
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,180,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Template="{StaticResource largelabel}" Content="For demo enter regID: 123" HorizontalAlignment="Left" Margin="232,296,0,0" VerticalAlignment="Top" Width="230"/>
-        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="184,10,0,0" StrokeThickness="0.35" VerticalAlignment="Top" Width="424">
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="184,10,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="424">
 
         </Rectangle>
-        <Grid.Background>
+ <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="White" Offset="0"/>
                 <GradientStop Color="#666666" Offset="1"/>

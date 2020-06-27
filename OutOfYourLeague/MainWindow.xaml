@@ -83,11 +83,12 @@
             <Button  Template="{StaticResource roundbutton}" Foreground="White" FontSize="14" Content="Top Goal Scorers" x:Name="topgoalscorers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="80" Click="stats_Click"/>
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Height="auto" Grid.Row="1" VerticalAlignment="Top" Width="146" Margin="81,40,0,0">
-            <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="75" Click="Button_Click"/>
+            <Button x:Name="fixture" Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="75" Click="fixture_Click" />
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Width="146" Margin="81,34,0,0">
             <Button Template="{StaticResource roundbutton}" Foreground="White" FontSize="14" Content="Standings" x:Name="loadLeague" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="80" Click="loadLeague_Click" />
         </Viewbox>
-        
+        <Button x:Name="logoff" Template="{StaticResource roundbutton}" Foreground="White" FontSize="14" Content="Log off" Grid.Column="2" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="75" Click="logoff_Click" />
+
     </Grid>
 </Window>

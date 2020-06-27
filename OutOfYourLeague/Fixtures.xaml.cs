@@ -26,10 +26,148 @@ namespace OutOfYourLeague
         public Fixtures()
         {
             InitializeComponent();
-            
+
         }
         int weeknum = 1;
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void weeks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            string selecteditm = weeks.SelectedItem.ToString();
+            int weeknum = Convert.ToInt32(selecteditm.Substring(selecteditm.Length - 1));
+            //Load fixtures to prepare for sorting
+            //Load fixture for each week default is the first week for now...
+            Fixtures fixtures = new Fixtures();
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    //get first week of fixture
+                    SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft, time, scoreright, teamonright AS awayteam  " +
+                                                                  "FROM fixturesorted " +
+                                                                  $"WHERE week={weeknum};"
+                                                                  , main.con);
+                    StandingsForLeague standingsForLeague = new StandingsForLeague();
+                    string lastweek = "";
+                    //get all the weeks to appear on the combobox
+                    SqlCommand sqlCommand = new SqlCommand(" SELECT MAX(week) " +
+                                                                    " FROM fixturesorted;"
+                                                                    , main.con);
+                    int maxnumofweeks = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                    int loop = 0;
+                    while (loop < maxnumofweeks)
+                    {
+                        fixtures.weeks.Items.Add($"Week {loop + 1}");
+                        loop++;
+                    }
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter2.Fill(dataTable);
+                    fixtures.user = user;
+                    if (fixtures.user == "player")
+                    {
+                        fixtures.updateLeague.Visibility = Visibility.Collapsed;
+                        fixtures.updatetime.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[1].ReadOnly = true;
+                        dataTable.Columns[2].ReadOnly = true;
+                        dataTable.Columns[3].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[4].ReadOnly = true;
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                    Close();
+                    fixtures.user = user;
+                    fixtures.Show();
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
+
+        private void main_Click(object sender, RoutedEventArgs e)
+        {
+            //Go back to main window
+            MainWindow main = new MainWindow();
+            Close();
+            main.user = user;
+            main.Show();
+        }
+
+        private void topgoalscorers_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            TopGoalScorers topGoalScorers = new TopGoalScorers();
+            //Load top goal scorers...
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *" +
+                                                                       "FROM topgoalscorers;"
+                                                                       , main.con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    topGoalScorers.user = user;
+                    if (topGoalScorers.user == "player")
+                    {
+                        topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
+                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
+                        //make columns read only
+                        dataTable.Columns[2].ReadOnly = true;
+                    }
+                    dataTable.Columns[0].ReadOnly = true;
+                    dataTable.Columns[1].ReadOnly = true;
+                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
+                }
+                Close();
+                topGoalScorers.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void standings_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            //Loading the league data to see standings
+            StandingsForLeague standingsForLeague = new StandingsForLeague();
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                                                                       " FROM league" +
+                                                                       " ORDER BY Points DESC;"
+                                                                       , main.con);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+
+                    //make columns read only
+                    foreach (DataColumn col in dataTable.Columns)
+                    {
+                        col.ReadOnly = true;
+                    }
+                    standingsForLeague.league.ItemsSource = dataTable.DefaultView;
+                }
+                Close();
+                standingsForLeague.user = user;
+                standingsForLeague.Show();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void updatetime_Click(object sender, RoutedEventArgs e)
         {
             MainWindow main = new MainWindow();
             StandingsForLeague standingsForLeague = new StandingsForLeague();
@@ -40,25 +178,58 @@ namespace OutOfYourLeague
                     main.con.Open();
                     //Update fixture tables 
                     foreach (DataRowView dr in fixtures.ItemsSource)
-                       
+
                     {
-                        if ($"{dr[1]}" != "" && $"{dr[2]}" != "")
+                        if ($"{dr[2]}" != "")
                         {
 
                             SqlCommand cmdupdatefixture = new SqlCommand();
                             cmdupdatefixture.CommandType = CommandType.Text;
-                            cmdupdatefixture.CommandText =" UPDATE fixturesorted" +
+                            cmdupdatefixture.CommandText = " UPDATE fixturesorted" +
+                                                          " SET time = @datetime" +
+                                                          " WHERE teamonleft = @teamonleft AND teamonright = @teamonright; ";                         
+                            cmdupdatefixture.Parameters.AddWithValue("@teamonleft", dr[0]);
+                            cmdupdatefixture.Parameters.AddWithValue("@teamonright", dr[4]);
+                            cmdupdatefixture.Parameters.AddWithValue("@datetime", dr[2]);
+                            cmdupdatefixture.Connection = main.con;
+                            cmdupdatefixture.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void updateLeague_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            StandingsForLeague standingsForLeague = new StandingsForLeague();
+            try
+            {
+                using (main.con)
+                {
+                    main.con.Open();
+                    //Update fixture tables 
+                    foreach (DataRowView dr in fixtures.ItemsSource)
+
+                    {
+                        if ($"{dr[1]}" != "" && $"{dr[3]}" != "")
+                        {
+                            SqlCommand cmdupdatefixture = new SqlCommand();
+                            cmdupdatefixture.CommandType = CommandType.Text;
+                            cmdupdatefixture.CommandText = " UPDATE fixturesorted" +
                                                           " SET scoreleft = @scoreleft," +
                                                           " scoreright = @scoreright " +
                                                           " WHERE teamonleft = @teamonleft AND teamonright = @teamonright; ";
                             cmdupdatefixture.Parameters.AddWithValue("@scoreleft", dr[1]);
-                            cmdupdatefixture.Parameters.AddWithValue("@scoreright", dr[2]);
+                            cmdupdatefixture.Parameters.AddWithValue("@scoreright", dr[3]);
                             cmdupdatefixture.Parameters.AddWithValue("@teamonleft", dr[0]);
-                            cmdupdatefixture.Parameters.AddWithValue("@teamonright", dr[3]);
+                            cmdupdatefixture.Parameters.AddWithValue("@teamonright", dr[4]);
                             cmdupdatefixture.Connection = main.con;
                             cmdupdatefixture.ExecuteNonQuery();
-
-                            
                         }
                     }
                     //update the league table through the updated fixture table
@@ -67,11 +238,11 @@ namespace OutOfYourLeague
                     cmdupdateleague.CommandText =
                         //"--prepare for new update league" +
                         " UPDATE league" +
-                        " SET P = 0, W = 0, D = 0,L = 0, GF = 0, GA = 0, Points = 0" +
+                        " SET MP = 0, W = 0, D = 0,L = 0, GF = 0, GA = 0, Points = 0" +
 
                         //"--update number of games played in league" +
                         " UPDATE league" +
-                        " SET P = played" +
+                        " SET MP = played" +
                         " FROM (" +
                         //" --number of wins a team has" +
                         "       SELECT team, Count(*) AS played" +
@@ -207,8 +378,8 @@ namespace OutOfYourLeague
                         "       FROM league" +
                         "       GROUP BY team) AS pointstable" +
                         " WHERE league.team = pointstable.team; ";
-                        cmdupdateleague.Connection = main.con;
-                        cmdupdateleague.ExecuteNonQuery();
+                    cmdupdateleague.Connection = main.con;
+                    cmdupdateleague.ExecuteNonQuery();
 
 
                     //Loading the league data to see standings
@@ -242,138 +413,12 @@ namespace OutOfYourLeague
             }
         }
 
-        private void weeks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void logoff_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow main = new MainWindow();
-            string selecteditm= weeks.SelectedItem.ToString();
-            int weeknum = Convert.ToInt32(selecteditm.Substring(selecteditm.Length - 1));
-            //Load fixtures to prepare for sorting
-            Fixtures fixtures = new Fixtures();
-            using (main.con)
-            {
-                main.con.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter($"SELECT teamonleft, scoreleft, scoreright, teamonright " +
-                                                                   $"FROM fixturesorted " +
-                                                                   $"WHERE week = {weeknum};"
-                                                                   , main.con);  
-                DataTable dataTable = new DataTable();
-                sqlDataAdapter.Fill(dataTable);
-                fixtures.fixtures.ItemsSource = dataTable.DefaultView;
-                string lastweek = "";
-                //get all the weeks to appear on the combobox
-                using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
-                                                                " FROM fixturesorted;"
-                                                                , main.con))
-                {
-                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                    {
-                        if (sqlDataReader != null)
-                        {
-                            while (sqlDataReader.Read())
-                            {
-                                if (lastweek != sqlDataReader["week"].ToString())
-                                {
-                                    fixtures.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
-                                    lastweek = sqlDataReader["week"].ToString();
-                                }
-                            }
-                        }
-                    }
-                    fixtures.user = user;
-                    if (fixtures.user == "player")
-                    {
-                        fixtures.updateLeague.Visibility = Visibility.Collapsed;
-                        //make columns read only
-                        dataTable.Columns[1].ReadOnly = true;
-                        dataTable.Columns[2].ReadOnly = true;
-                    }
-                    dataTable.Columns[0].ReadOnly = true;
-                    dataTable.Columns[3].ReadOnly = true;
-                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
-                }
-                Close();
-                fixtures.Show();
-            }
-
-        }
-
-        private void main_Click(object sender, RoutedEventArgs e)
-        {
-            //Go back to main window
-            MainWindow main = new MainWindow();
+            //Go to login
             Close();
-            main.user = user;
-            main.Show();
-        }
-
-        private void topgoalscorers_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow main = new MainWindow();
-            TopGoalScorers topGoalScorers = new TopGoalScorers();
-            //Load top goal scorers...
-            try
-            {
-                using (main.con)
-                {
-                    main.con.Open();
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *" +
-                                                                       "FROM topgoalscorers;"
-                                                                       , main.con);
-                    DataTable dataTable = new DataTable();
-                    sqlDataAdapter.Fill(dataTable);
-                    topGoalScorers.user = user;
-                    if (topGoalScorers.user == "player")
-                    {
-                        topGoalScorers.addplayer.Visibility = Visibility.Collapsed;
-                        topGoalScorers.updatetopgoalscorer.Visibility = Visibility.Collapsed;
-                        //make columns read only
-                        dataTable.Columns[2].ReadOnly = true;
-                    }
-                    dataTable.Columns[0].ReadOnly = true;
-                    dataTable.Columns[1].ReadOnly = true;
-                    topGoalScorers.topgoalscorers.ItemsSource = dataTable.DefaultView;
-                }
-                Close();
-                topGoalScorers.Show();
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void standings_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow main = new MainWindow();
-            //Loading the league data to see standings
-            StandingsForLeague standingsForLeague = new StandingsForLeague();
-            try
-            {
-                using (main.con)
-                {
-                    main.con.Open();
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
-                                                                       " FROM league" +
-                                                                       " ORDER BY Points DESC;"
-                                                                       , main.con);
-                    DataTable dataTable = new DataTable();
-                    sqlDataAdapter.Fill(dataTable);
-
-                    //make columns read only
-                    foreach (DataColumn col in dataTable.Columns)
-                    {
-                        col.ReadOnly = true;
-                    }
-                    standingsForLeague.league.ItemsSource = dataTable.DefaultView;
-                }
-                Close();
-                standingsForLeague.user = user;
-                standingsForLeague.Show();
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            Login login = new Login();
+            login.Show();
         }
     }
 }

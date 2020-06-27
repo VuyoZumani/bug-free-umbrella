@@ -99,16 +99,17 @@
         <PasswordBox GotFocus="confirmpassword_GotFocus" Style="{StaticResource passwordboxCompulsory}" x:Name="confirmpassword" HorizontalAlignment="Left" Margin="450,220,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
         <PasswordBox GotFocus="password_GotFocus" Style="{StaticResource passwordboxCompulsory}" x:Name="password" HorizontalAlignment="Left" Margin="450,180,0,0" VerticalAlignment="Top" Height="24" Width="120"/>
         <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14"  x:Name="submitsignupinfo" Content="Submit" HorizontalAlignment="Left" Margin="312,335,0,0" VerticalAlignment="Top" Width="180" Height="46" Click="submitsignupinfo_Click"/>
-        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14"   Content="Login" HorizontalAlignment="Left" Margin="682,16,0,0" VerticalAlignment="Top" Width="80" Height="26" Click="Button_Click"/>
+        <Button x:Name="login" Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14"   Content="Login" HorizontalAlignment="Left" Margin="682,16,0,0" VerticalAlignment="Top" Width="80" Height="26" Click="login_Click" />
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,140,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,102,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,180,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Foreground="Red" Content="*" HorizontalAlignment="Left" Margin="570,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.272,-1.141" Width="18"/>
         <Label Template="{StaticResource largelabel}" Content="For demo enter regID: 123" HorizontalAlignment="Left" Margin="232,296,0,0" VerticalAlignment="Top" Width="230"/>
-        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="184,10,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="424">
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="382" Margin="184,16,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="424">
 
         </Rectangle>
- <Grid.Background>
+        <Label Foreground="Red" Content="Fields marked with * are required" HorizontalAlignment="Left" Margin="232,69,0,0" VerticalAlignment="Top" Width="200"/>
+        <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="White" Offset="0"/>
                 <GradientStop Color="#666666" Offset="1"/>

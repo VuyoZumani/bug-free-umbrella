@@ -100,14 +100,6 @@ namespace OutOfYourLeague
             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //Go to login
-            Close();
-            Login login = new Login();
-            login.Show();
-        }
-
         private void firstname_GotFocus(object sender, RoutedEventArgs e)
         {
             firstname.BorderBrush = Brushes.White;
@@ -126,6 +118,14 @@ namespace OutOfYourLeague
         private void confirmpassword_GotFocus(object sender, RoutedEventArgs e)
         {
             confirmpassword.BorderBrush = Brushes.White;
+        }
+
+        private void login_Click(object sender, RoutedEventArgs e)
+        {
+            //Go to login
+            Close();
+            Login login = new Login();
+            login.Show();
         }
     }
 }

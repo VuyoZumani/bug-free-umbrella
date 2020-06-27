@@ -82,8 +82,9 @@
     <Grid>
         <DataGrid Name="league" Height="auto" Style="{DynamicResource datagrid}"  HorizontalAlignment="Center" Margin="35,57,30,0" VerticalAlignment="Top" Width="727" SelectionChanged="league_SelectionChanged" MinColumnWidth="70"/>
         <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="35,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="main_Click"/>
-        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click"/>
-        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="Button_Click_1"/>
+        <Button x:Name="fixture" Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Fixtures" HorizontalAlignment="Left" Margin="303,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="fixture_Click" />
+        <Button x:Name="topgoalscorer" Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="562,284,0,0" VerticalAlignment="Top" Width="200" Height="39" Click="topgoalscorer_Click"/>
+        <Button x:Name="logoff" Template="{StaticResource roundbutton}" Foreground="White" FontSize="14" Content="Log off" HorizontalAlignment="Left" Margin="683,10,0,0" VerticalAlignment="Top" Width="75" Click="logoff_Click" />
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="White" Offset="0"/>

@@ -77,7 +77,7 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="-2,0,2,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="35*"/>
             <ColumnDefinition Width="15*"/>
@@ -85,28 +85,31 @@
         </Grid.ColumnDefinitions>
         <Viewbox HorizontalAlignment="Left" Width="271" Height="44" Margin="88,345,0,0" VerticalAlignment="Top" >
             <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="addplayer" Content="Add player" HorizontalAlignment="Left" VerticalAlignment="Top" Width="251" Height="44" Click="addplayer_Click">
- 
+
             </Button>
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Width="216" Height="25" Margin="1,75,0,0" VerticalAlignment="Top" Grid.Column="2">
             <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="standings" Content="Standings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="26" Click="standings_Click">
-          
+
             </Button>
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Width="216" Height="27" Margin="1,25,0,0" VerticalAlignment="Top" Grid.Column="2">
             <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" VerticalAlignment="Top" Width="139" Height="26" Click="main_Click">
-      
+
             </Button>
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Width="216" Height="25" Margin="1,125,0,0" VerticalAlignment="Top" Grid.Column="2">
             <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="fixtures" Content="Fixtures" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="26" Click="fixtures_Click">
-       
+
             </Button>
         </Viewbox>
         <Viewbox Height="auto" Width="auto" HorizontalAlignment="Left" Margin="34,72,0,0" VerticalAlignment="Top" >
             <DataGrid Height="auto" Style="{DynamicResource datagrid}" x:Name="topgoalscorers" HorizontalAlignment="Right" VerticalAlignment="Top" Width="362"/>
         </Viewbox>
         <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updatetopgoalscorer" Content="Update top goal scorers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="251" Height="44" Margin="86,266,0,0" Click="updatetopgoalscorer_Click"/>
+        <Viewbox HorizontalAlignment="Left" Width="216" Height="27" Margin="3,169,-36,0" VerticalAlignment="Top" Grid.Column="2">
+            <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="logoff" Content="Log off" HorizontalAlignment="Left" VerticalAlignment="Top" Width="139" Height="26" Click="logoff_Click"/>
+        </Viewbox>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="White" Offset="0"/>

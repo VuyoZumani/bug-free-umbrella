@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Drawing.Imaging;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,6 +15,9 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Microsoft.Win32;
 using System.IO;
+using System.Drawing;
+using System.Windows.Media.Imaging;
+//using System.Drawing;
 
 namespace OutOfYourLeague
 {
@@ -30,23 +31,22 @@ namespace OutOfYourLeague
         {
             InitializeComponent();
         }
-
         private void addTeam_Click(object sender, RoutedEventArgs e)
         {
             //check if not empty
-            if (teamToBeEntered.Text == "") 
+            if (teamToBeEntered.Text == "")
             {
-                teamToBeEntered.BorderBrush = Brushes.Red;
+                teamToBeEntered.BorderBrush = System.Windows.Media.Brushes.Red;
             }
             else
             {
                 //Check if team already added
                 int j = 0;
-                foreach ( string i in teams.Items)
+                foreach (string i in teams.Items)
                 {
-                    if (i == teams.Items[j].ToString())
+                    if (teamToBeEntered.Text == i)
                     {
-                        teamToBeEntered.BorderBrush = Brushes.Red;
+                        teamToBeEntered.BorderBrush = System.Windows.Media.Brushes.Red;
                         MessageBox.Show("Team already added to the league");
                     }
                     j++;
@@ -55,15 +55,15 @@ namespace OutOfYourLeague
                 string team = teamToBeEntered.Text;
                 teams.Items.Add(team);
                 teamToBeEntered.Clear();
-            }            
+            }
         }
 
         private void create_Click(object sender, RoutedEventArgs e)
         {
             //validation
             if (teams.Items.Count < 2)
-            { 
-                teamToBeEntered.BorderBrush = Brushes.Red;
+            {
+                teamToBeEntered.BorderBrush = System.Windows.Media.Brushes.Red;
                 MessageBox.Show("There must be at least two teams");
             }
             else
@@ -77,8 +77,6 @@ namespace OutOfYourLeague
                         main.con.Open();
                         SqlCommand cmdcreateleague = new SqlCommand();
                         cmdcreateleague.CommandType = CommandType.Text;
-
-
                         //creating the league table and inserting the teams into the table and setting the initial values to zero
                         cmdcreateleague.CommandText = " CREATE TABLE league (" +
                                             " Team varchar(255)," +
@@ -90,7 +88,7 @@ namespace OutOfYourLeague
                                             " GA int NOT NULL," +
                                             " GD int NOT NULL," +
                                             " Points int NOT NULL, " +
-                                            " PRIMARY KEY (Team)" +
+                                            " PRIMARY KEY (Team) " +
                                             ") ";
                         cmdcreateleague.Connection = main.con;
                         cmdcreateleague.ExecuteNonQuery();
@@ -100,14 +98,12 @@ namespace OutOfYourLeague
                             SqlCommand cmdinsertleague = new SqlCommand();
                             cmdinsertleague.CommandType = CommandType.Text;
                             //creating the league table and inserting the teams into the table and setting the initial values to zero
-                            cmdinsertleague.CommandText = "INSERT INTO league (Team, P , W , D , L , GF , GA , GD , Points) " +
-                                                         $"VALUES (@teaminleague{i}, 0, 0, 0, 0, 0, 0, 0, 0) ";
-                            cmdinsertleague.Parameters.AddWithValue($"@teaminleague{i}", teams.Items.GetItemAt(i));
+                            cmdinsertleague.CommandText = "INSERT INTO league (Team, MP , W , D , L , GF , GA , GD , Points) " +
+                                                         $"VALUES ( @teaminleague, 0, 0, 0, 0, 0, 0, 0, 0) ";
+                            cmdinsertleague.Parameters.AddWithValue($"@teaminleague", teams.Items.GetItemAt(i));
                             cmdinsertleague.Connection = main.con;
                             cmdinsertleague.ExecuteNonQuery();
                         }
-
-
 
                         //creating fixtures
                         SqlCommand cmdcreatefixture = new SqlCommand();
@@ -116,12 +112,10 @@ namespace OutOfYourLeague
                                             "FROM (" +
                                             "SELECT " +
                                             " " +
-                                            //"--deals with the leftside" +
+                                            //"--deals with the leftside"
                                             "   CASE WHEN team1.team>team2.team THEN team2.team " +
                                             "        ELSE team1.team " +
                                             "   END AS teamonleft," +
-                                            "     NULL AS scoreleft," +
-                                            "   NULL AS scoreright, " +
                                             //"--deals with the rightside" +
                                             "   CASE WHEN team1.team > team2.team THEN team1.team " +
                                             "        ELSE team2.team " +
@@ -161,7 +155,7 @@ namespace OutOfYourLeague
                         {
                             if (count < numofteams - 1)
                             {
-                                weeks[count, 0] = $"{dr[0]}|" + $"{dr[3]}";
+                                weeks[count, 0] = $"{dr[0]}|" + $"{dr[1]}";
                             }
                             else
                             {
@@ -175,12 +169,12 @@ namespace OutOfYourLeague
                                         if (weeks[i, j] == null)
                                         {
                                             index = j;
-                                            weeks[i, j] = $"{dr[0]}|" + $"{dr[3]}";
+                                            weeks[i, j] = $"{dr[0]}|" + $"{dr[1]}";
                                             break;
                                         }
                                         else
                                         {//if one of the teams already has a match that week 
-                                            if (weeks[i, j].Contains($"{dr[0]}") || weeks[i, j].Contains($"{dr[3]}"))
+                                            if (weeks[i, j].Contains($"{dr[0]}") || weeks[i, j].Contains($"{dr[1]}"))
                                             {
                                                 inweek = true;
                                                 break;
@@ -190,7 +184,7 @@ namespace OutOfYourLeague
                                     //not in the week, then can be inserted
                                     if (inweek == false)
                                     {
-                                        weeks[i, index] = $"{dr[0]}|" + $"{dr[3]}";
+                                        weeks[i, index] = $"{dr[0]}|" + $"{dr[1]}";
                                         break;
                                     }
                                     inweek = false;
@@ -220,12 +214,14 @@ namespace OutOfYourLeague
                         cmdfixturesort.CommandType = CommandType.Text;
                         cmdfixturesort.CommandText = " CREATE TABLE fixturesorted (" +
                                                     " week int NOT NULL," +
+                                                    //" teamlogoleft image" +
                                                     " teamonleft varchar(255)," +
                                                     " scoreleft int , " +
                                                     " time datetime, " +
                                                     " scoreright int ," +
                                                     " teamonright varchar(255)," +
-                                                    " CONSTRAINT match PRIMARY KEY (teamonright, teamonleft) ";
+                                                    //" teamlogoright image" +
+                                                    " CONSTRAINT match PRIMARY KEY (teamonright, teamonleft) );";
                         cmdfixturesort.Connection = main.con;
                         cmdfixturesort.ExecuteNonQuery();
                         //loop for inserting the now sorted fixtures in fixturesorted table
@@ -263,40 +259,30 @@ namespace OutOfYourLeague
                         cmdtopgoalscorer.ExecuteNonQuery();
 
                         //Load fixture for each week default is the first week for now...
-
-                        SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft, scoreleft, scoreright, teamonright  " +
-                                                                            "FROM fixturesorted " +
-                                                                            "WHERE week=1;"
-                                                                            , main.con);
-                        DataTable dataTable2 = new DataTable();
-                        sqlDataAdapter2.Fill(dataTable2);
-                        dataTable2.Columns[0].ReadOnly = true;
-                        dataTable2.Columns[3].ReadOnly = true;
-                        fixtures2.fixtures.ItemsSource = dataTable2.DefaultView;
-                        string lastweek = "";
-                        using (SqlCommand sqlCommand = new SqlCommand(" SELECT week " +
-                                                                      " FROM fixturesorted;"
-                                                                        , main.con))
+                        SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft, time, scoreright, teamonright AS awayteam  " +
+                                                                             "FROM fixturesorted " +
+                                                                             "WHERE week=1;"
+                                                                             ,main.con);
+                        StandingsForLeague standingsForLeague = new StandingsForLeague();
+                        //get all the weeks to appear on the combobox
+                        SqlCommand sqlCommand = new SqlCommand(" SELECT MAX(week) " +
+                                                                " FROM fixturesorted;"
+                                                                , main.con);
+                        int maxnumofweeks = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                        int loop = 0;
+                        while (loop < maxnumofweeks)
                         {
-                            using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                            {
-                                if (sqlDataReader != null)
-                                {
-                                    while (sqlDataReader.Read())
-                                    {
-                                        if (lastweek != sqlDataReader["week"].ToString())
-                                        {
-                                            fixtures2.weeks.Items.Add($"Week{sqlDataReader["week"].ToString()}");
-                                            lastweek = sqlDataReader["week"].ToString();
-                                        }
-                                    }
-
-                                }
-                            }
+                            fixtures.weeks.Items.Add($"Week {loop + 1}");
+                            loop++;
                         }
+                        DataTable dataTable1 = new DataTable();
+                        sqlDataAdapter2.Fill(dataTable1);
+                        fixtures.user = user;
+                        dataTable1.Columns[0].ReadOnly = true;
+                        dataTable1.Columns[4].ReadOnly = true;
+                        fixtures.fixtures.ItemsSource = dataTable.DefaultView;
                         Close();
-                        fixtures2.user = user;
-                        fixtures2.Show();
+                        fixtures.Show();
                     }
                 }
                 catch (SqlException ex)
@@ -304,44 +290,19 @@ namespace OutOfYourLeague
                     MessageBox.Show(ex.ToString());
                 }
             }
-            
-        }
-
-        private void main_Click(object sender, RoutedEventArgs e)
-        {
-            //Go back to main window
-            MainWindow main = new MainWindow();
-            Close();
-            main.Show();
         }
 
         private void teamToBeEntered_GotFocus(object sender, RoutedEventArgs e)
         {
-            teamToBeEntered.BorderBrush = Brushes.White;
-        }
-        BitmapImage image;
-        private void browseimage_Click(object sender, RoutedEventArgs e)
-        {
-            //to browse for the team logo
-            OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Select a picture";
-            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
-              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-              "Portable Network Graphic (*.png)|*.png";
-            if (op.ShowDialog() == true)
-            {
-                teamlogo.Source = new BitmapImage(new Uri(op.FileName));
-                image= new BitmapImage(new Uri(op.FileName)); 
-            }
+            teamToBeEntered.BorderBrush = System.Windows.Media.Brushes.White;
         }
 
-
-        byte[] arr;
-        private void saveimage_Click(object sender, RoutedEventArgs e)
+        private void logoff_Click(object sender, RoutedEventArgs e)
         {
-           //save image
-           System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-            arr = (byte[])converter.ConvertTo(image, typeof(byte[]));
+            //Go to login
+            Close();
+            Login login = new Login();
+            login.Show();
         }
     }
 }

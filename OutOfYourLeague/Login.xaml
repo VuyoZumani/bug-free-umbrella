@@ -119,9 +119,9 @@
                 <ImageBrush ImageSource="usericon.jpg"/>
             </Rectangle.Fill>
 
-                    </Rectangle>
-        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="253,10,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="284">
-            
+        </Rectangle>
+        <Rectangle RadiusX="50" RadiusY="50" Stroke="Black" HorizontalAlignment="Left" Height="399" Margin="180,6,0,0" StrokeThickness="0.95" VerticalAlignment="Top" Width="424">
+
 
         </Rectangle>
         <Grid.Background>

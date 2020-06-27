@@ -146,5 +146,13 @@ namespace OutOfYourLeague
         {
             goals.BorderBrush = Brushes.White;
         }
+
+        private void logoff_Click(object sender, RoutedEventArgs e)
+        {
+            //Go to login
+            Close();
+            Login login = new Login();
+            login.Show();
+        }
     } 
 }

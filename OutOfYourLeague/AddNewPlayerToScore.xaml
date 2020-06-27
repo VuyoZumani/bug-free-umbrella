@@ -82,8 +82,8 @@
         <Viewbox Grid.Column="1" HorizontalAlignment="Left" Height="83" VerticalAlignment="Bottom" Width="360" Grid.Row="2" RenderTransformOrigin="0.502,0.642" Grid.RowSpan="2">
             <Button Template="{StaticResource roundbutton}" Foreground="White" FontSize="14"  x:Name="addplayer" Content="Add Player" HorizontalAlignment="Left" VerticalAlignment="Top" Width="333" Height="47" Click="addplayer_Click"/>
         </Viewbox>
-       <TextBox GotFocus="goals_GotFocus" x:Name="goals" HorizontalAlignment="Left" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Width="358" Grid.Column="1" Margin="0,17,0,0" Grid.Row="2"/>
-       <TextBox GotFocus="player_GotFocus" x:Name="player" HorizontalAlignment="Left" Height="42" TextWrapping="Wrap" VerticalAlignment="Top" Width="360" TextChanged="TextBox_TextChanged" Grid.Column="1" Margin="0,28,0,0"/>
+        <TextBox GotFocus="goals_GotFocus" x:Name="goals" HorizontalAlignment="Left" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Width="358" Grid.Column="1" Margin="0,17,0,0" Grid.Row="2"/>
+        <TextBox GotFocus="player_GotFocus" x:Name="player" HorizontalAlignment="Left" Height="42" TextWrapping="Wrap" VerticalAlignment="Top" Width="360" TextChanged="TextBox_TextChanged" Grid.Column="1" Margin="0,28,0,0"/>
         <ComboBox GotFocus="teamofplayer_GotFocus" Foreground="#FF060A34" x:Name="teamofplayer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="358" SelectionChanged="teamofplayer_SelectionChanged" Height="42" Grid.Column="1" Margin="0,28,0,0" Grid.Row="1"/>
         <Viewbox Grid.Column="2" HorizontalAlignment="Left" Height="50" Margin="36,22,0,0" VerticalAlignment="Top" Width="132" Grid.RowSpan="2">
             <Button Template="{StaticResource roundbutton}" Foreground="White" FontSize="14"  x:Name="main" Content="Home" HorizontalAlignment="Left" VerticalAlignment="Top" Width="166" Height="26" Click="main_Click"/>
@@ -100,6 +100,9 @@
         </Viewbox>
         <Viewbox HorizontalAlignment="Left" Height="68" Margin="31,17,0,0" VerticalAlignment="Top" Width="190" Grid.RowSpan="2" Grid.Row="2">
             <Label Template="{StaticResource largelabel}"  Content="Goals:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190"/>
+        </Viewbox>
+        <Viewbox Grid.Column="2" HorizontalAlignment="Left" Height="50" Margin="36,28,0,0" VerticalAlignment="Top" Width="132" Grid.RowSpan="2" Grid.Row="1">
+            <Button Template="{StaticResource roundbutton}" Foreground="White" FontSize="14"  x:Name="logoff" Content="Log off" HorizontalAlignment="Left" VerticalAlignment="Top" Width="166" Height="26" Click="logoff_Click"/>
         </Viewbox>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">

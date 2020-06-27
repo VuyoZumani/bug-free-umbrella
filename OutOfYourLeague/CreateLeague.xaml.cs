@@ -84,10 +84,10 @@ namespace OutOfYourLeague
                                             " W int NOT NULL," +
                                             " D int NOT NULL," +
                                             " L int NOT NULL," +
+                                            " Points int NOT NULL, " +
                                             " GF int NOT NULL," +
                                             " GA int NOT NULL," +
                                             " GD int NOT NULL," +
-                                            " Points int NOT NULL, " +
                                             " PRIMARY KEY (Team) " +
                                             ") ";
                         cmdcreateleague.Connection = main.con;
@@ -220,6 +220,7 @@ namespace OutOfYourLeague
                                                     " time datetime, " +
                                                     " scoreright int ," +
                                                     " teamonright varchar(255)," +
+                                                    " field varchar(255)," +
                                                     //" teamlogoright image" +
                                                     " CONSTRAINT match PRIMARY KEY (teamonright, teamonleft) );";
                         cmdfixturesort.Connection = main.con;
@@ -259,7 +260,7 @@ namespace OutOfYourLeague
                         cmdtopgoalscorer.ExecuteNonQuery();
 
                         //Load fixture for each week default is the first week for now...
-                        SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft, time, scoreright, teamonright AS awayteam  " +
+                        SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft, time, scoreright, teamonright AS awayteam, field  " +
                                                                              "FROM fixturesorted " +
                                                                              "WHERE week=1;"
                                                                              ,main.con);
@@ -280,7 +281,7 @@ namespace OutOfYourLeague
                         fixtures.user = user;
                         dataTable1.Columns[0].ReadOnly = true;
                         dataTable1.Columns[4].ReadOnly = true;
-                        fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+                        fixtures.fixtures.ItemsSource = dataTable1.DefaultView;
                         Close();
                         fixtures.Show();
                     }

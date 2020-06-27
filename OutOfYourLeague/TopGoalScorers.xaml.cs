@@ -46,7 +46,7 @@ namespace OutOfYourLeague
                 using (main.con)
                 {
                     main.con.Open();
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT * " +
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(" SELECT team " +
                                                                        " FROM league" +
                                                                        " ORDER BY Points DESC;"
                                                                        , main.con);
@@ -57,6 +57,7 @@ namespace OutOfYourLeague
                     foreach (DataRow row in dataTable.Rows)
                     {
                         row[0] = $"{count}.  {row[0]}";
+
                         count++;
                     }
                     //make columns read only
@@ -64,7 +65,22 @@ namespace OutOfYourLeague
                     {
                         col.ReadOnly = true;
                     }
-                    standingsForLeague.league.ItemsSource = dataTable.DefaultView;
+
+                    standingsForLeague.teams.ItemsSource = dataTable.DefaultView;
+                    SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter(" SELECT MP,W,D,L,GF,GA,GD,Points as Pts " +
+                                                                       " FROM league" +
+                                                                       " ORDER BY Points DESC;"
+                                                                       , main.con);
+                    DataTable dataTable2 = new DataTable();
+                    sqlDataAdapter2.Fill(dataTable2);
+                    //make columns read only
+                    foreach (DataColumn col in dataTable2.Columns)
+                    {
+                        col.ReadOnly = true;
+                    }
+
+                    standingsForLeague.league.ItemsSource = dataTable2.DefaultView;
+
                 }
                 Close();
                 standingsForLeague.user = user;
@@ -73,7 +89,7 @@ namespace OutOfYourLeague
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.ToString());
-            }           
+            }
         }
 
         private void fixtures_Click(object sender, RoutedEventArgs e)
@@ -87,9 +103,9 @@ namespace OutOfYourLeague
                 {
                     main.con.Open();
                     //get first week of fixture
-                    SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft, time, scoreright, teamonright AS awayteam  " +
+                    SqlDataAdapter sqlDataAdapter2 = new SqlDataAdapter("SELECT teamonleft AS hometeam, scoreleft as homescore, time as datetime, scoreright as awayscore, teamonright AS awayteam, field  " +
                                                                   "FROM fixturesorted " +
-                                                                  "WHERE week=1;"
+                                                                  $"WHERE week=1;"
                                                                   , main.con);
                     StandingsForLeague standingsForLeague = new StandingsForLeague();
                     string lastweek = "";
@@ -111,16 +127,19 @@ namespace OutOfYourLeague
                     {
                         fixtures.updateLeague.Visibility = Visibility.Collapsed;
                         fixtures.updatetime.Visibility = Visibility.Collapsed;
+                        fixtures.updatefield.Visibility = Visibility.Collapsed;
                         //make columns read only
                         dataTable.Columns[1].ReadOnly = true;
                         dataTable.Columns[2].ReadOnly = true;
                         dataTable.Columns[3].ReadOnly = true;
+                        dataTable.Columns[5].ReadOnly = true;
                     }
                     dataTable.Columns[0].ReadOnly = true;
                     dataTable.Columns[4].ReadOnly = true;
-                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
+
                     Close();
                     fixtures.user = user;
+                    fixtures.fixtures.ItemsSource = dataTable.DefaultView;
                     fixtures.Show();
                 }
 
@@ -129,6 +148,7 @@ namespace OutOfYourLeague
             {
                 MessageBox.Show(ex.ToString());
             }
+
         }
 
         private void addplayer_Click(object sender, RoutedEventArgs e)

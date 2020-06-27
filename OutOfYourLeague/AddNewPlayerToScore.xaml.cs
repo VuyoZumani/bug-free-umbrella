@@ -28,16 +28,6 @@ namespace OutOfYourLeague
             InitializeComponent();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void teamofplayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
         private void addplayer_Click(object sender, RoutedEventArgs e)
         {
             //validation

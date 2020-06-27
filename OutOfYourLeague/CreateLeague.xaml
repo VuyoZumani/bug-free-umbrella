@@ -67,7 +67,7 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <ListBox HorizontalAlignment="Left" Name="teams" Height="202" Margin="254,97,0,0" VerticalAlignment="Top" Width="336"/>
+        <ListBox HorizontalAlignment="Left" Name="teams" Height="202" Margin="251,97,0,0" VerticalAlignment="Top" Width="339"/>
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" Content="Add Team" Name="addTeam" HorizontalAlignment="Left" Margin="438,47,0,0" VerticalAlignment="Top" Width="149" Height="41" Click="addTeam_Click"/>
         <TextBox GotFocus="teamToBeEntered_GotFocus" HorizontalAlignment="Left" Name="teamToBeEntered" Height="41" Margin="251,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182"/>
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" Content="Create" Name="create" HorizontalAlignment="Left" Margin="253,306,0,0" VerticalAlignment="Top" Width="336" RenderTransformOrigin="0.04,1.75" Height="46" Click="create_Click"/>

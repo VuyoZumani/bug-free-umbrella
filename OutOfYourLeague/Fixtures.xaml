@@ -83,14 +83,14 @@
 
     </Window.Resources>
     <Grid>
-        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="48,283,0,0" VerticalAlignment="Top" Width="145" Height="34" Click="updateLeague_Click"/>
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updateLeague" Content="Update Standings" HorizontalAlignment="Left" Margin="213,348,0,0" VerticalAlignment="Top" Width="145" Height="34" Click="updateLeague_Click"/>
         <ComboBox  Foreground="#FF060A34" FontSize="14" Name="weeks" HorizontalAlignment="Left" Margin="48,59,0,0" VerticalAlignment="Top" Width="174" SelectionChanged="weeks_SelectionChanged"/>
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="main" Content="Home" HorizontalAlignment="Left" Margin="631,11,0,0" VerticalAlignment="Top" Width="130" Height="20" Click="main_Click"/>
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="standings" Content="Standings" HorizontalAlignment="Left" Margin="631,47,0,0" VerticalAlignment="Top" Width="130" Height="20" Click="standings_Click"/>
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="topgoalscorers" Content="Top Goal Scorers" HorizontalAlignment="Left" Margin="631,86,0,0" VerticalAlignment="Top" Width="130" Height="20" Click="topgoalscorers_Click"/>
         <Label Template="{StaticResource largelabel}" Content="Week" HorizontalAlignment="Left" Margin="48,25,0,0" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.421,1.186"/>
         <DataGrid  Style="{DynamicResource datagrid}" x:Name="fixtures" HorizontalAlignment="Left" Height="auto" Margin="48,89,0,0" VerticalAlignment="Top" Width="480"/>
-        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updatetime" Content="Update time" HorizontalAlignment="Left" Margin="220,283,0,0" VerticalAlignment="Top" Width="146" Height="34" Click="updatetime_Click" />
+        <Button Template="{StaticResource roundbutton}"  Foreground="White" FontSize="14" x:Name="updatetime" Content="Update time" HorizontalAlignment="Left" Margin="213,291,0,0" VerticalAlignment="Top" Width="146" Height="34" Click="updatetime_Click" />
         <Button Template="{StaticResource roundbutton}"   Foreground="White" FontSize="14" x:Name="logoff" Content="Log off" HorizontalAlignment="Left" Margin="631,122,0,0" VerticalAlignment="Top" Width="130" Height="20" Click="logoff_Click" />
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
